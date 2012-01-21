@@ -3,10 +3,10 @@ import java.util.Vector;
 
 public class DevicePhysique {
 	private int idPhysique;
-	private String typePhysique;
+	private int typePhysique;
 	private ArrayList<DeviceLogique> listeDevicesLogiques = new ArrayList<DeviceLogique>();
 	
-	public DevicePhysique(int idPhysique, String typePhysique,ArrayList<DeviceLogique> listeDevicesLogiques) {
+	public DevicePhysique(int idPhysique, int typePhysique,ArrayList<DeviceLogique> listeDevicesLogiques) {
 		this.idPhysique = idPhysique;
 		this.typePhysique = typePhysique;
 		this.listeDevicesLogiques = listeDevicesLogiques;
@@ -24,7 +24,7 @@ public class DevicePhysique {
 		return idPhysique;
 	}
 
-	public String getTypePhysique() {
+	public int getTypePhysique() {
 		return typePhysique;
 	}
 

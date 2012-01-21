@@ -4,8 +4,11 @@ public class Constantes {
 	public final static int TAILLE_TRAME_ENOCEAN = 28;
 	public final static String IP_BASE = "134.214.105.28";
 	public final static int PORT_BASE = 5000;
-	public final static String IP_GHOME = "127.0.0.1";
-	public final static int PORT_GHOME = 5000;
+	public final static String IP_GHOME = "134.214.58.23";
+	public final static int PORT_GHOME = 80;
+	
+	//public final static String IP_GHOME = "134.214.105.198";
+	//public final static int PORT_GHOME = 5000;
 	public final static int PORT_SERV_ENVOI = 5000;
 	
 	// Type de trame (envoyée au serveur)
@@ -22,16 +25,18 @@ public class Constantes {
 	public final static char TYPE_RETRAIT = 'R'; // Capteur plus détecté
 	
 	// Type capteur
-	public final static char TYPE_TEMPERATURE = 'T';
-	public final static char TYPE_HUMIDITE = 'H';
-	public final static char TYPE_PRESENCE = 'P';
-	public final static char TYPE_CONTACT = 'C'; // Contact fenêtre ou porte fermée
-	public final static char TYPE_INTERRUPTEUR = 'I';
-	public final static char TYPE_ACTIONNEUR = 'E';
+	public final static char TYPE_L_TEMPERATURE = 'T';
+	public final static char TYPE_L_HUMIDITE = 'H';
+	public final static char TYPE_L_PRESENCE = 'P';
+	public final static char TYPE_L_CONTACT = 'C'; // Contact fenêtre ou porte fermée
+	public final static char TYPE_L_INTERRUPTEUR = 'I';
+	public final static char TYPE_L_ACTIONNEUR = 'E';
 	
 	// Type physique des capteurs
-	public final static String TYPE_INTERRUPTEUR_4 = "Interrupteur_4";
+	public final static int TYPE_P_INTERRUPTEUR_4 = 123;
 	public final static int ID_INTERRUPTEUR_4 = Integer.parseInt("0021CC07", 16);
+	public final static int TYPE_P_CONTACT = 245;
+	public final static int ID_CONTACT = Integer.parseInt("0001B596", 16);
 	
 	
 	// Correspondance Index dans le tableau de caractères / byte EnOcean

@@ -50,11 +50,17 @@ public class ClientLectureBase implements Runnable {
 			System.out.println("ClientLectureBase : Après getInputStream");
 
 			BufferedReader response = new BufferedReader(new InputStreamReader(input));
-			System.out.println("ClientLectureBase : trame reçue : " + response.toString());
+			
 			// On attend d'avoir 28 octets et on ajoute la trame aux trames à parser
 			try {
 				int msg = response.read(cbuf, 0, Constantes.TAILLE_TRAME_ENOCEAN);
 				if (msg > 0) {
+					System.out.print("ClientLectureBase : trame reçue : ");
+					for(int i=0; i<cbuf.length; i++)
+					{
+						System.out.print(cbuf[i]);
+					}
+					System.out.println();
 					Parseur.addTrame(cbuf);
 				} else {
 					System.out.println("Pas de message");

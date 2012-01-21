@@ -38,6 +38,10 @@ public class EnsembleDevices {
 		}
 		mapDevicesPhysiques.remove(new Integer(dp.getIdPhysique()));	
 	}
+	
+	public static DevicePhysique getDevicePhysiqueByID(int idPhysique) {
+		return mapDevicesPhysiques.get(new Integer(idPhysique));
+	}
 
 	public  static int getNextIdLogique()
 	{

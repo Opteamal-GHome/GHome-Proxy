@@ -10,11 +10,28 @@ public class Main {
 	public static void main(String[] args) {
 		
 		// Création des Capteurs
-		DevicePhysique interrupteur = new DevicePhysique(Constantes.ID_INTERRUPTEUR_4, Constantes.TYPE_INTERRUPTEUR_4, null);
-		DeviceLogique interrupteurLogique = new DeviceLogique(EnsembleDevices.getNextIdLogique(), Constantes.TYPE_INTERRUPTEUR, interrupteur);
+		DevicePhysique contact = new DevicePhysique(Constantes.ID_CONTACT, Constantes.TYPE_P_CONTACT, null);
+		DeviceLogique contactLogique = new DeviceLogique(EnsembleDevices.getNextIdLogique(), Constantes.TYPE_L_CONTACT, contact);
 		ArrayList<DeviceLogique> listeDevLogInt = new ArrayList<DeviceLogique>();
-		listeDevLogInt.add(interrupteurLogique);
-		interrupteur.setListeDevicesLogiques(listeDevLogInt);
+		listeDevLogInt.add(contactLogique);
+		contact.setListeDevicesLogiques(listeDevLogInt);
+		EnsembleDevices.ajouterDevice(Constantes.ID_CONTACT, contact);
+
+		// TODO Vérifier ordre de création + faire le lancement des threads (start) dans le main plutôt que dans les constructeurs
+		
+		// Lancement du serveur (test)
+		ServeurEnvoiGHome serv = new ServeurEnvoiGHome(Constantes.PORT_SERV_ENVOI);
+		
+		// Lancement du thread de parsing des trames
+		Parseur parseur = new Parseur();
+		
+		// Lancement du Thread d'envoi
+		try {
+			ClientEnvoiGHome clientEnvoi = new ClientEnvoiGHome(InetAddress.getByName(Constantes.IP_GHOME), Constantes.PORT_GHOME);
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		// Lancement du thread de réception des trames de la base
 		try {
@@ -23,20 +40,6 @@ public class Main {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		// Lancement du Thread d'envoi
-//		try {
-//			ClientEnvoiGHome clientEnvoi = new ClientEnvoiGHome(InetAddress.getByName(Constantes.IP_GHOME), Constantes.PORT_GHOME);
-//		} catch (UnknownHostException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
-		// Lancement du Thread d'envoi
-		ServeurEnvoiGHome serveurEnvoi = new ServeurEnvoiGHome(Constantes.PORT_SERV_ENVOI);
-		
-		// Lancement du thread de parsing des trames
-		Parseur parseur = new Parseur();
 		
 		/***********tests***************/
 		/*char[] trame = {'A','5','5','A','0','B','0','5','0','0','0','0','0','0','0','0','0','0','2','1','C','B','E','5','2','0','0','1'};

@@ -39,6 +39,12 @@ public class ClientEnvoiGHome  implements Runnable {
 	@Override
 	public void run() {
 		while (continuer) {
+			try {
+				clientEnvoiThread.sleep(500);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			System.out.println("ClientEnvoiGHome : dans le while");
 			ProxyTrame proxyTrame;
 			synchronized (listeProxyTrames) {
@@ -65,6 +71,7 @@ public class ClientEnvoiGHome  implements Runnable {
 	}
 
 	public static void addProxyTrame(ProxyTrame proxyTrame) {
+		System.out.println("ClientEnvoiGHome : dans addProxyTrame");
 		synchronized (listeProxyTrames) {
 			// listeProxyTrames.wait();
 			listeProxyTrames.add(proxyTrame);
@@ -73,9 +80,11 @@ public class ClientEnvoiGHome  implements Runnable {
 	}
 	
 	public void envoyerProxyTrame(ProxyTrame proxyTrame){
+		System.out.println("ClientEnvoiGHome : dans envoyerProxyTrame");
 		try {
 			ObjectOutputStream outToServer = new ObjectOutputStream(_socket.getOutputStream());
 			outToServer.writeObject(proxyTrame);
+			//outToServer.writeObject("Coucou");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

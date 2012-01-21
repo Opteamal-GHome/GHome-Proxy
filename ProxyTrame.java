@@ -1,7 +1,8 @@
-import java.security.Timestamp;
+import java.io.Serializable;
+import java.sql.Timestamp;
 
 
-public class ProxyTrame 
+public class ProxyTrame implements Serializable
 
 {
 	public Timestamp timestamp;

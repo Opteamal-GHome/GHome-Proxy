@@ -1,5 +1,6 @@
-
+﻿
 public class Constantes {
+
 
 	public final static int TAILLE_TRAME_ENOCEAN = 28;
 	public final static String IP_BASE = "134.214.105.28";

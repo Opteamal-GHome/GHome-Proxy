@@ -59,9 +59,9 @@ public class ServeurEnvoiGHome implements Runnable {
 				
 				ObjectInputStream input = new ObjectInputStream(s.getInputStream());
 				try {
-					proxyTrame = (ProxyTrame) input.readObject();
+					ProxyTrame proxyTrame = (ProxyTrame) input.readObject();
 					System.out.println("ServeurEnvoiGHome : in = " + proxyTrame);
-					System.out.println("ServeurEnvoiGHome : in = " + proxyTrame.type);
+					System.out.println("ServeurEnvoiGHome : in = " + proxyTrame.getType());
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

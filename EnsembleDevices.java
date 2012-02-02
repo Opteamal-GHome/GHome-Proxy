@@ -18,7 +18,8 @@ public class EnsembleDevices {
 		
 		// Ajout des capteurs logiques correspondants
 		ArrayList<DeviceLogique> v = nouveauDevicePhysique.getListeDevicesLogiques();
-		for(int i=0; i<v.size(); i++){
+		for(int i=0; i<v.size(); i++)
+		{
 			DeviceLogique dl = v.get(i);
 			mapDevicesLogiques.put(new Integer(dl.getIdLogique()), dl);
 		}

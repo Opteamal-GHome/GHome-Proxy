@@ -4,7 +4,7 @@ public class Constantes {
 	public final static int TAILLE_TRAME_ENOCEAN = 28;
 	public final static String IP_BASE = "134.214.105.28";
 	public final static int PORT_BASE = 5000;
-	public final static String IP_GHOME = "134.214.58.23";
+	public final static String IP_GHOME = "134.214.58.131";
 	public final static int PORT_GHOME = 80;
 	
 	//public final static String IP_GHOME = "134.214.105.198";
@@ -35,6 +35,8 @@ public class Constantes {
 	// Type physique des capteurs
 	public final static int TYPE_P_INTERRUPTEUR_4 = 123;
 	public final static int ID_INTERRUPTEUR_4 = Integer.parseInt("0021CC07", 16);
+	//TODO check ID Prise
+	public final static int ID_PRISE = Integer.parseInt("FF9F1E0X", 16);
 	public final static int TYPE_P_CONTACT = 245;
 	public final static int ID_CONTACT = Integer.parseInt("0001B596", 16);
 	

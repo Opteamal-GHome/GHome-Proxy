@@ -54,8 +54,10 @@ public class Parseur implements Runnable {
 		{
 			//parse frame of type 'S' for devices without teachin
 		}
-		else 
+		else // Trame de données
 		{
+			// remettre le watchdog à 0 (car on a bien reçu une trame de ce capteur)
+			EnsembleDevices.getDevicePhysiqueByID(id).redemarrerTimer();
 			listeProxyTrames = parseTrameD(id, trame, timestamp);
 		}
 		return listeProxyTrames;
@@ -460,7 +462,7 @@ public class Parseur implements Runnable {
 					}
 				}
 				trame = listeTrames.remove(0);
-				//listeTrames.notify();
+				listeTrames.notify();
 			}
 			ArrayList<ProxyTrame> listeProxyTrames = parseTrame(trame);
 			if((listeProxyTrames != null) && (listeProxyTrames.size() != 0)){

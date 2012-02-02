@@ -4,11 +4,11 @@ public class Constantes {
 	public final static int TAILLE_TRAME_ENOCEAN = 28;
 	public final static String IP_BASE = "134.214.105.28";
 	public final static int PORT_BASE = 5000;
-	public final static String IP_GHOME = "134.214.58.131";
-	public final static int PORT_GHOME = 80;
+	//public final static String IP_GHOME = "134.214.58.131";
+	//public final static int PORT_GHOME = 80;
 	
-	//public final static String IP_GHOME = "134.214.105.198";
-	//public final static int PORT_GHOME = 5000;
+	public final static String IP_GHOME = "127.0.0.1";
+	public final static int PORT_GHOME = 5000;
 	public final static int PORT_SERV_ENVOI = 5000;
 	
 	// Type de trame (envoyée au serveur)
@@ -33,11 +33,13 @@ public class Constantes {
 	public final static char TYPE_L_ACTIONNEUR = 'E';
 	
 	// Type physique des capteurs
-	public final static int TYPE_P_INTERRUPTEUR_4 = 123;
+	//public final static int TYPE_P_INTERRUPTEUR_4 = 123;
+	public final static String TYPE_P_INTERRUPTEUR_4 = "05-02-01";
 	public final static int ID_INTERRUPTEUR_4 = Integer.parseInt("0021CC07", 16);
 	//TODO check ID Prise
-	public final static int ID_PRISE = Integer.parseInt("FF9F1E0X", 16);
-	public final static int TYPE_P_CONTACT = 245;
+	//public final static int ID_PRISE = Integer.parseInt("00FF9F1E0X", 16);
+	//public final static int TYPE_P_CONTACT = 245;
+	public final static String TYPE_P_CONTACT = "06-00-01";
 	public final static int ID_CONTACT = Integer.parseInt("0001B596", 16);
 	
 	
@@ -70,6 +72,8 @@ public class Constantes {
 	public final static int STATUS_2 = 25;
 	public final static int CHECKSUM_1 = 26;
 	public final static int CHECKSUM_2 = 27;
-	
-	// Correspondance numero de caractère dans 
+
+	// Temps au bout duquel l'alerte enlèvement est déclenchée
+	//public final static int DELAI_DECLENCHEMENT_TIMER = 900000;
+	public final static int DELAI_DECLENCHEMENT_TIMER = 10000;
 }

@@ -416,6 +416,7 @@ public class Parseur implements Runnable {
 		return listeTrames;
 	}
 	
+	//TODO finish this
 	public static String createFrameForContact (int actionOnContact)
 	{	
 		//create a TX-Telegram received from a Rocker Switch (RPS)

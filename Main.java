@@ -45,7 +45,7 @@ public class Main {
 //		interrupteur.demarrerTimer();
 		
 		// Lancement du Thread d'envoi
-		/*try {
+		try {
 			ClientEnvoiGHome clientEnvoi = new ClientEnvoiGHome(InetAddress.getByName(Constantes.IP_GHOME), Constantes.PORT_GHOME);
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block

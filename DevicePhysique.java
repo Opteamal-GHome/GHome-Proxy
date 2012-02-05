@@ -16,7 +16,7 @@ public class DevicePhysique {
 		this.typePhysique = typePhysique;
 		this.listeDevicesLogiques = listeDevicesLogiques;
 		
-		// CrÃ©ation du timer
+		// Création du timer
 		TimerListener taskPerformer = new TimerListener(this);
 		this.timerDevice = new Timer(Constantes.DELAI_DECLENCHEMENT_TIMER, taskPerformer);
 	}
@@ -38,12 +38,12 @@ public class DevicePhysique {
 	}
 	
 	public void demarrerTimer(){
-		System.out.println("On dÃ©marre le timer");
+		System.out.println("On démarre le timer");
 		this.timerDevice.start();
 	}
 	
 	public void redemarrerTimer(){
-		System.out.println("On redÃ©marre le timer");
+		System.out.println("On redémarre le timer");
 		this.timerDevice.restart();
 	}
 }

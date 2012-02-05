@@ -18,7 +18,8 @@ public class ServeurEnvoiGHome implements Runnable {
 	private ServerSocket serverSocket;
 	public boolean continuer = true;
 
-	public ServeurEnvoiGHome(int port) {
+	public ServeurEnvoiGHome(int port) 
+	{
 
 		System.out.println("ServeurEnvoiGHome : dans le constructeur");
 		

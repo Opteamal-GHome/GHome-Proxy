@@ -18,6 +18,7 @@ public class ProxyTrameS extends ProxyTrame implements Serializable
 	public void setTypeDevice(char typeDevice) {
 		this.typeDevice = typeDevice;
 	}
-	
-	
+	public char getTypeDevice() {
+		return typeDevice;
+	}
 }

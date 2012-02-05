@@ -57,7 +57,7 @@ public class ClientEnvoiGHome  implements Runnable {
 					}
 				}
 				proxyTrame = listeProxyTrames.remove(0);
-				// listeProxyTrames.notify();
+				listeProxyTrames.notify();
 			}
 
 			envoyerProxyTrame(proxyTrame);
@@ -78,7 +78,7 @@ public class ClientEnvoiGHome  implements Runnable {
 			listeProxyTrames.notify();
 		}
 	}
-	
+
 	public void envoyerProxyTrame(ProxyTrame proxyTrame){
 		System.out.println("ClientEnvoiGHome : dans envoyerProxyTrame");
 		try {

@@ -7,12 +7,12 @@ import java.util.Vector;
  * Classe permettant la gestion des différents capteurs/actionneurs enregistrés
  */
 public class EnsembleDevices {
-	public static HashMap<Integer, DevicePhysique> mapDevicesPhysiques = new HashMap<Integer, DevicePhysique>();
+	public static HashMap<Long, DevicePhysique> mapDevicesPhysiques = new HashMap<Long, DevicePhysique>();
 	public static HashMap<Integer, DeviceLogique> mapDevicesLogiques = new HashMap<Integer, DeviceLogique>();
 	public static int nextIDLogique = -1;
 	
 	
-	public static void ajouterDevice(Integer nouveauIDPysique, DevicePhysique nouveauDevicePhysique)
+	public static void ajouterDevice(long nouveauIDPysique, DevicePhysique nouveauDevicePhysique)
 	{
 		mapDevicesPhysiques.put(nouveauIDPysique, nouveauDevicePhysique);
 		
@@ -21,29 +21,38 @@ public class EnsembleDevices {
 		for(int i=0; i<v.size(); i++)
 		{
 			DeviceLogique dl = v.get(i);
-			mapDevicesLogiques.put(new Integer(dl.getIdLogique()), dl);
+			mapDevicesLogiques.put(dl.getIdLogique(), dl);
 		}
+		
+		// Démarrer le timer du device
+		nouveauDevicePhysique.demarrerTimer();
 	}
 	
 	public static void supprimerDevice(int idLogique)
 	{
-		DeviceLogique dl = mapDevicesLogiques.get(new Integer(idLogique));
-		mapDevicesLogiques.remove(new Integer(idLogique));
+		DeviceLogique dl = mapDevicesLogiques.get(idLogique);
+		mapDevicesLogiques.remove(idLogique);
 		
 		DevicePhysique dp = dl.getDevicePhysique();
 		ArrayList<DeviceLogique> vDL= dp.getListeDevicesLogiques();
 		
 		for (int i = 0; i < vDL.size(); i++)
 		{
-			mapDevicesLogiques.remove(new Integer(vDL.get(i).getIdLogique()));
+			mapDevicesLogiques.remove(vDL.get(i).getIdLogique());
 		}
-		mapDevicesPhysiques.remove(new Integer(dp.getIdPhysique()));	
+		mapDevicesPhysiques.remove(dp.getIdPhysique());	
 	}
 	
-	public static DevicePhysique getDevicePhysiqueByID(int idPhysique) {
-		return mapDevicesPhysiques.get(new Integer(idPhysique));
+	public static DevicePhysique getDevicePhysiqueByID(long idPhysique) {
+		return mapDevicesPhysiques.get(idPhysique);
 	}
 
+	
+	public static DeviceLogique getDeviceLogiquebyID(int idLogique)
+	{
+		return mapDevicesLogiques.get(idLogique);
+	}
+	
 	public  static int getNextIdLogique()
 	{
 		nextIDLogique++;

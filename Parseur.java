@@ -21,7 +21,8 @@ public class Parseur implements Runnable {
 		this.parseurThread.start();
 	}
 
-	public static void addTrame(char[] trame) {
+	public static void addTrame(char[] trame) 
+	{
 		synchronized (listeTrames) {
 			//listeTrames.wait();
 			listeTrames.add(trame);
@@ -36,7 +37,7 @@ public class Parseur implements Runnable {
 		int dataByte0_1 = Integer.parseInt((""+trame[Constantes.DATA_BYTE_0_1]), 16);
 		int dataByte0_2 = Integer.parseInt((""+trame[Constantes.DATA_BYTE_0_2]), 16);
 		
-		int id = parseID(trame);
+		long id = parseID(trame);
 		
 		ArrayList<ProxyTrame> listeProxyTrames = new ArrayList<ProxyTrame>();
 		long timestamp = System.currentTimeMillis();
@@ -53,9 +54,12 @@ public class Parseur implements Runnable {
 		else if(EnsembleDevices.getDevicePhysiqueByID(id) == null)
 		{
 			//parse frame of type 'S' for devices without teachin
+			System.out.println("capteur inconnu !");
 		}
-		else 
+		else // Trame de données
 		{
+			// remettre le watchdog à 0 (car on a bien reçu une trame de ce capteur)
+			EnsembleDevices.getDevicePhysiqueByID(id).redemarrerTimer();
 			listeProxyTrames = parseTrameD(id, trame, timestamp);
 		}
 		return listeProxyTrames;
@@ -88,7 +92,7 @@ public class Parseur implements Runnable {
 	
 	}
 	
-	public static ArrayList<ProxyTrame> parseTeachIn (int id, int org, int func, int type, long timestamp)
+	public static ArrayList<ProxyTrame> parseTeachIn (long id, int org, int func, int type, long timestamp)
 	{
 		System.out.println("Parseur : dans parseTeachIn");
 		ArrayList<ProxyTrame> listeTramesS = new ArrayList<ProxyTrame>();
@@ -117,7 +121,7 @@ public class Parseur implements Runnable {
 	}
 	
 	
-	public static ArrayList<ProxyTrame> TeachInTemp40 (int id, long timestamp)
+	public static ArrayList<ProxyTrame> TeachInTemp40 (long id, long timestamp)
 	{
 		System.out.println("Parseur : dans TeachInTemp40");
 		ArrayList<ProxyTrame> listeTramesS = new ArrayList<ProxyTrame>();
@@ -140,7 +144,7 @@ public class Parseur implements Runnable {
 	}
 	
 	
-	public static ArrayList<ProxyTrame> TeachInLTO (int id, long timestamp)
+	public static ArrayList<ProxyTrame> TeachInLTO (long id, long timestamp)
 	{
 		System.out.println("Parseur : dans TeachInLTO");
 		ArrayList<ProxyTrame> listeTramesS = new ArrayList<ProxyTrame>();
@@ -185,7 +189,7 @@ public class Parseur implements Runnable {
 	}
 	
 	
-	public static ArrayList<ProxyTrame> parseTrameD(int idPhysique, char[] trame, long timestamp) {
+	public static ArrayList<ProxyTrame> parseTrameD(long idPhysique, char[] trame, long timestamp) {
 		
 		System.out.println("Parseur : dans parseTrameD");
 		
@@ -364,8 +368,8 @@ public class Parseur implements Runnable {
 	}	
 
 	
-	public static int parseID(char[] trame){
-		int idPhysique = Integer.parseInt(("" + trame[Constantes.ID_BYTE_3_1] + trame[Constantes.ID_BYTE_3_2] + 
+	public static long parseID(char[] trame){
+		long idPhysique = Integer.parseInt(("" + trame[Constantes.ID_BYTE_3_1] + trame[Constantes.ID_BYTE_3_2] + 
 				trame[Constantes.ID_BYTE_2_1] + trame[Constantes.ID_BYTE_2_2] + trame[Constantes.ID_BYTE_1_1] + 
 				trame[Constantes.ID_BYTE_1_2] + trame[Constantes.ID_BYTE_0_1] + trame[Constantes.ID_BYTE_0_2]), 16);
 		return idPhysique;
@@ -416,27 +420,6 @@ public class Parseur implements Runnable {
 		return listeTrames;
 	}
 	
-	//TODO finish this
-	public static String createFrameForContact (int actionOnContact)
-	{	
-		//create a TX-Telegram received from a Rocker Switch (RPS)
-		String trame = "A55A6B05";
-		String DB3 = "";
-		
-		if(actionOnContact == 1) // openContact; Button B1 pushed
-		{
-			DB3 = "60";
-		}
-		else //Button B0 pushed
-		{
-			DB3 = "70";
-		}
-		
-		trame += DB3 + "000000FF9F1E0X" + "30";
-		//calculate checkSum -> anything works for checkSum
-		return trame;
-		
-	}
 	
 	
 	@Override
@@ -460,7 +443,7 @@ public class Parseur implements Runnable {
 					}
 				}
 				trame = listeTrames.remove(0);
-				//listeTrames.notify();
+				listeTrames.notify();
 			}
 			ArrayList<ProxyTrame> listeProxyTrames = parseTrame(trame);
 			if((listeProxyTrames != null) && (listeProxyTrames.size() != 0)){

@@ -27,5 +27,9 @@ public class ProxyTrame implements Serializable
 	public void setType(char type) {
 		this.type = type;
 	}
+	
+	public String encodeTrame() {
+		
+	}
 
 }

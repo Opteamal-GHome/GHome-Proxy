@@ -25,6 +25,7 @@ public class Constantes {
 	public final static char TYPE_RETRAIT = 'R'; // Capteur plus détecté
 	
 	// Type capteur
+	public final static char TYPE_L_LUMINOSITE = 'L';
 	public final static char TYPE_L_TEMPERATURE = 'T';
 	public final static char TYPE_L_HUMIDITE = 'H';
 	public final static char TYPE_L_PRESENCE = 'P';

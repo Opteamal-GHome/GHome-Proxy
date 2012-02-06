@@ -85,6 +85,8 @@ public class ClientEnvoiGHome  implements Runnable {
 		try {
 			ObjectOutputStream outToServer = new ObjectOutputStream(_socket.getOutputStream());
 			outToServer.writeObject(proxyTrame);
+			
+			
 			//outToServer.writeObject("Coucou");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

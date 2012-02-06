@@ -1,8 +1,13 @@
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
@@ -81,21 +86,58 @@ public class ClientEnvoiGHome  implements Runnable {
 	}
 
 	public void envoyerProxyTrame(ProxyTrame proxyTrame){
+		
 		System.out.println("ClientEnvoiGHome : dans envoyerProxyTrame");
 		try {
-			ObjectOutputStream outToServer = new ObjectOutputStream(_socket.getOutputStream());
-			//outToServer.writeObject(proxyTrame);
+			String chaine = "";
 			
+			// On recupere le timestamp
+			Long timestamp = proxyTrame.getTimestamp();
+			timestamp = timestamp / 1000;
+			timestamp = (long) Math.round(timestamp);
+			
+			byte[] timestampB = toByteArray(timestamp);
+
+			// On recupere le type de la trame
+			chaine += proxyTrame.getType();
+
 			// On recupere les bytes correspondant aux attributs de proxyTrame
-			String chaine = proxyTrame.encodeTrame();
+			chaine += proxyTrame.encodeTrame();
 			byte[] chaineTransformee = chaine.getBytes();
+			
+			// On concatene les deux 
+			byte[] both= concat(timestampB, chaineTransformee);
 						
 			// On l'envoie
-			outToServer.write(chaineTransformee);
+			if(_socket.isConnected()) {
+				DataOutputStream dataReturn = new DataOutputStream(_socket.getOutputStream());
+				dataReturn.write(both);
+				System.out.println(chaine);
+			}
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	
+	public static byte[] concat(byte[] first, byte[] second) {
+		byte[] result = Arrays.copyOf(first, first.length + second.length);
+		  System.arraycopy(second, 0, result, first.length, second.length);
+		  return result;
+		}
+	
+	public static byte[] toByteArray(long l) {
+	     return new byte[] { 
+	        (byte)((l >> 56) & 0xff),
+	         (byte)((l >> 48) & 0xff),
+	         (byte)((l >> 40) & 0xff),
+	         (byte)((l >> 32) & 0xff),
+	         (byte)((l >> 24) & 0xff),
+	         (byte)((l >> 16) & 0xff),
+	         (byte)((l >> 8) & 0xff),
+	         (byte)((l >> 0) & 0xff),
+	     };
+	 }
 
 }

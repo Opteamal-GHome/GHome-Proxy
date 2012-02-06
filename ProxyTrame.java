@@ -6,6 +6,8 @@ import java.io.Serializable;
 public abstract class ProxyTrame implements Serializable
 
 {
+	private static final long serialVersionUID = 4418423202442270112L;
+	
 	//public Timestamp timestamp;
 	private long timestamp;
 	private char type; // 'S' (for status), 'D' (for data)
@@ -18,6 +20,10 @@ public abstract class ProxyTrame implements Serializable
 	public ProxyTrame (long timestamp, char type) {
 		this.timestamp = timestamp;
 		this.type = type;
+	}
+	
+	public long getTimestamp() {
+		return this.timestamp;
 	}
 	
 	public char getType() {

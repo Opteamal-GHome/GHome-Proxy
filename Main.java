@@ -41,8 +41,8 @@ public class Main {
 		// Lancement du thread de parsing des trames
 		Parseur parseur = new Parseur();
 		
-//		contact.demarrerTimer();
-//		interrupteur.demarrerTimer();
+		contact.demarrerTimer();
+		interrupteur.demarrerTimer();
 		
 		// Lancement du Thread d'envoi
 		try {
@@ -85,18 +85,19 @@ public class Main {
 //		System.out.println(Integer.parseInt("060001", 16));
 		
 		// Trame du contact
-		for(int i=0;i<999999999;i++);
-		contact.redemarrerTimer();
+		//for(int i=0;i<999999999;i++);
+		//contact.redemarrerTimer();
 		
 		//send command telegram to device
-		ClientEnvoieBase.addToList("A55A6B0560000000FF9F1E073000");
+		//ClientEnvoieBase.addToList("A55A6B0570000000FF9F1E073000");
+		ClientEnvoieBase.addToList("A55A6B0550000000FF9F1E073000"); // turns on the contact
 		try {
 			ClientEnvoieBase c = new ClientEnvoieBase(InetAddress.getByName(Constantes.IP_BASE), Constantes.PORT_BASE);
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 }

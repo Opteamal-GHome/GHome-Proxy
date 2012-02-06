@@ -1,22 +1,23 @@
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
 
 public class Commande implements Runnable
 {
-	private static ArrayList<byte[]> listeTramesCommande;
+	private static ArrayList<ByteBuffer> listeTramesCommande;
 	private Thread commandeThread = null;
 
 	
 	Commande()
 	{
 		System.out.println("Commande : dans le constructeur");
-		listeTramesCommande = new ArrayList<byte[]>();
+		listeTramesCommande = new ArrayList<ByteBuffer>();
 		commandeThread = new Thread(this);
 		commandeThread.start();
 	}
 	
 	
-	public static void addCommande(byte[] commandFromServer) 
+	public static void addCommande(ByteBuffer commandFromServer) 
 	{
 		synchronized (listeTramesCommande) 
 		{
@@ -25,14 +26,21 @@ public class Commande implements Runnable
 		}
 	}
 	
-	public ArrayList<String> createCommands(byte[] trame) 
+	public ArrayList<String> createCommands(/*byte[]*/ ByteBuffer buffer) 
 	{
+	    //ByteBuffer bb = ByteBuffer.allocate(18);
+	    //continet toute l'information en bytes
+		
 		System.out.println("In createCommands ");
 		ArrayList<String> commands = new ArrayList<String>();
 		//TODO extract corresponding bytes
 		char typeOfMessage = 'x'; // 'O' -> order
 		int idLogique = -1; //device to command
 		int data = -1; //1 to turn on, 0 to turn off
+		
+		typeOfMessage = buffer.getChar(8); // get char starting with the 8th byte in the buffer
+		idLogique = buffer.getInt(10);
+		data = buffer.getInt(14); // get the int corresponding to the command
 		
 		DeviceLogique devLog = EnsembleDevices.getDeviceLogiquebyID(idLogique);
 		DevicePhysique devPhy = devLog.getDevicePhysique();
@@ -54,11 +62,11 @@ public class Commande implements Runnable
 		//create a TX-Telegram received from a Rocker Switch (RPS)
 		String telegram = "A55A6B05";
 		
-		if(data == 1) // openContact; Button B1 pushed
+		if(data == 1) // open Contact; Button B1 pushed
 		{
-			telegram += "60";
+			telegram += "50";
 		}
-		else //Button B0 pushed
+		else //Button B0 pushed; close contact
 		{
 			telegram += "70";
 		}

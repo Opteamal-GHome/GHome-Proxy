@@ -43,7 +43,7 @@ public class ClientEnvoieBase implements Runnable
 	{
 		while(OK)
 		{
-			//System.out.println("in the client's while ");
+			System.out.println("in the client's while ");
 			try 
 			{
 				String messageToSend = null;
@@ -62,13 +62,11 @@ public class ClientEnvoieBase implements Runnable
 				}
 				
 				ObjectOutputStream outToServer = new ObjectOutputStream(socket.getOutputStream());
-				byte [] byteMessage = messageToSend.getBytes("UTF-8");
-				//for(int i = 0; i < byteMessage.length; i++)
-				//{
-				outToServer.writeObject(byteMessage);
-				//System.out.println("client sent object ");
+				byte [] byteMessage = messageToSend.getBytes();
 
-				//}
+				outToServer.writeObject(byteMessage);
+				System.out.println("client sent object ");
+
 						
 			} catch (IOException e) 
 			{

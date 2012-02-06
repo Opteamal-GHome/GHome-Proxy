@@ -2,14 +2,14 @@
 public class Constantes {
 
 	public final static int TAILLE_TRAME_ENOCEAN = 28;
-	public final static String IP_BASE = "134.214.105.28";
-	public final static int PORT_BASE = 5000;
+	public final static String IP_BASE = "127.0.0.1";
+	public final static int PORT_BASE = 8080;
 	//public final static String IP_GHOME = "134.214.58.131";
 	//public final static int PORT_GHOME = 80;
 	
-	public final static String IP_GHOME = "134.214.58.131";
-	public final static int PORT_GHOME = 80;
-	public final static int PORT_SERV_ENVOI = 5000;
+	public final static String IP_GHOME = "127.0.0.1";
+	public final static int PORT_GHOME = 8081;
+	public final static int PORT_SERV_ENVOI = 8081;
 	
 	// Type de trame (envoyée au serveur)
 	public final static char TYPE_STATUS = 'S';

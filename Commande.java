@@ -1,10 +1,11 @@
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Commande implements Runnable
 {
-	private static ArrayList<ByteBuffer> listeTramesCommande;
+	private static List<ByteBuffer> listeTramesCommande;
 	private Thread commandeThread = null;
 
 	
@@ -26,13 +27,13 @@ public class Commande implements Runnable
 		}
 	}
 	
-	public ArrayList<String> createCommands(/*byte[]*/ ByteBuffer buffer) 
+	public List<String> createCommands(/*byte[]*/ ByteBuffer buffer) 
 	{
 	    //ByteBuffer bb = ByteBuffer.allocate(18);
 	    //continet toute l'information en bytes
 		
 		System.out.println("In createCommands ");
-		ArrayList<String> commands = new ArrayList<String>();
+		List<String> commands = new ArrayList<String>();
 		//TODO extract corresponding bytes
 		char typeOfMessage = 'x'; // 'O' -> order
 		int idLogique = -1; //device to command
@@ -56,9 +57,9 @@ public class Commande implements Runnable
 		return commands;	
 	}
 
-	public static ArrayList<String> createFrameForContact (int data)
+	public static List<String> createFrameForContact (int data)
 	{	
-		ArrayList<String> commands = new ArrayList<String>();
+		List<String> commands = new ArrayList<String>();
 		//create a TX-Telegram received from a Rocker Switch (RPS)
 		String telegram = "A55A6B05";
 		
@@ -93,7 +94,7 @@ public class Commande implements Runnable
 					e.printStackTrace();
 				}
 
-				ArrayList<String> commandes = createCommands(listeTramesCommande.remove(0));
+				List<String> commandes = createCommands(listeTramesCommande.remove(0));
 				listeTramesCommande.notify(); //necessary ?
 				if(commandes != null && commandes.size() > 0)
 				{

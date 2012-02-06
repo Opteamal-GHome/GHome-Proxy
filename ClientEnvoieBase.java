@@ -3,6 +3,7 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 
 
 
@@ -12,9 +13,9 @@ public class ClientEnvoieBase implements Runnable
 	private boolean OK = true;
 	private static Thread clientThread = null;
 	private Socket socket;
-	private static ArrayList<String> commandes; 
+	private static List<String> commandes; 
 	
-	private static ArrayList<String> toSend = new ArrayList<String>();
+	private static List<String> toSend = new ArrayList<String>();
 	
 	//this method is called in the run method of the Commande class
 	public static void addToList( String command)

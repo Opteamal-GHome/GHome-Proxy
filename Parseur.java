@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 public class Parseur implements Runnable {
 
 
-	private static ArrayList<char[]> listeTrames;
+	private static List<char[]> listeTrames;
 	private Thread parseurThread = null;
 	public static boolean continuer = true;
 	
@@ -29,7 +30,7 @@ public class Parseur implements Runnable {
 		}
 	}
 
-	public ArrayList<ProxyTrame> parseTrame(char[] trame) {
+	public List<ProxyTrame> parseTrame(char[] trame) {
 		
 		System.out.println("Parseur : dans parseTrame");
 		
@@ -38,7 +39,7 @@ public class Parseur implements Runnable {
 		
 		long id = parseID(trame);
 		
-		ArrayList<ProxyTrame> listeProxyTrames = new ArrayList<ProxyTrame>();
+		List<ProxyTrame> listeProxyTrames = new ArrayList<ProxyTrame>();
 		long timestamp = System.currentTimeMillis();
 
 		// teach-in frame and unknown device
@@ -91,10 +92,10 @@ public class Parseur implements Runnable {
 	
 	}
 	
-	public static ArrayList<ProxyTrame> parseTeachIn (long id, int org, int func, int type, long timestamp)
+	public static List<ProxyTrame> parseTeachIn (long id, int org, int func, int type, long timestamp)
 	{
 		System.out.println("Parseur : dans parseTeachIn");
-		ArrayList<ProxyTrame> listeTramesS = new ArrayList<ProxyTrame>();
+		List<ProxyTrame> listeTramesS = new ArrayList<ProxyTrame>();
 		
 		switch (func)
 		{
@@ -120,34 +121,29 @@ public class Parseur implements Runnable {
 	}
 	
 	
-	public static ArrayList<ProxyTrame> TeachInTemp40 (long id, long timestamp)
+	public static List<ProxyTrame> TeachInTemp40 (long id, long timestamp)
 	{
 		System.out.println("Parseur : dans TeachInTemp40");
-		ArrayList<ProxyTrame> listeTramesS = new ArrayList<ProxyTrame>();
-		ArrayList<DeviceLogique> listeDevLog = new ArrayList<DeviceLogique>();
+		List<ProxyTrame> listeTramesS = new ArrayList<ProxyTrame>();
+		List<DeviceLogique> listeDevLog = new ArrayList<DeviceLogique>();
 		DevicePhysique devPhysique = new DevicePhysique(id, "07-02-05", listeDevLog);
 		DeviceLogique tempDevice = new DeviceLogique(EnsembleDevices.getNextIdLogique(), 'T', devPhysique);
 		listeDevLog.add(tempDevice);
 		
 		EnsembleDevices.ajouterDevice(id, devPhysique);
 		
-		ProxyTrameS proxyTrame1 = new ProxyTrameS();
-		proxyTrame1.setTimestamp(timestamp);
-		proxyTrame1.setType('S');
-		proxyTrame1.setDeviceId(tempDevice.getIdLogique());
-		proxyTrame1.setTypeMessage('A'); //add
-		proxyTrame1.setTypeDevice('T');
+		ProxyTrameS proxyTrame1 = new ProxyTrameS(timestamp, 'S', 'A', tempDevice.getIdLogique(), 'T');
 		listeTramesS.add(proxyTrame1);
 		
 		return listeTramesS;
 	}
 	
 	
-	public static ArrayList<ProxyTrame> TeachInLTO (long id, long timestamp)
+	public static List<ProxyTrame> TeachInLTO (long id, long timestamp)
 	{
 		System.out.println("Parseur : dans TeachInLTO");
-		ArrayList<ProxyTrame> listeTramesS = new ArrayList<ProxyTrame>();
-		ArrayList<DeviceLogique> listeDevLog = new ArrayList<DeviceLogique>();
+		List<ProxyTrame> listeTramesS = new ArrayList<ProxyTrame>();
+		List<DeviceLogique> listeDevLog = new ArrayList<DeviceLogique>();
 		DevicePhysique devPhysique = new DevicePhysique(id, "07-08-01", listeDevLog);
 		//todo voltage ?
 		DeviceLogique lightDevice = new DeviceLogique(EnsembleDevices.getNextIdLogique(), 'L', devPhysique);
@@ -160,39 +156,24 @@ public class Parseur implements Runnable {
 		listeDevLog.add(presDevice);
 		EnsembleDevices.ajouterDevice(id, devPhysique);
 		
-		ProxyTrameS proxyTrame1 = new ProxyTrameS();
-		proxyTrame1.setTimestamp(timestamp);
-		proxyTrame1.setType('S');
-		proxyTrame1.setDeviceId(lightDevice.getIdLogique());
-		proxyTrame1.setTypeMessage('A'); //add
-		proxyTrame1.setTypeDevice('L');
+		ProxyTrameS proxyTrame1 = new ProxyTrameS(timestamp, 'S', 'A', lightDevice.getIdLogique(), 'L');
 		listeTramesS.add(proxyTrame1);
 		
-		ProxyTrameS proxyTrame2 = new ProxyTrameS();
-		proxyTrame1.setTimestamp(timestamp);
-		proxyTrame1.setType('S');
-		proxyTrame1.setDeviceId(tempDevice.getIdLogique());
-		proxyTrame1.setTypeMessage('A'); //add
-		proxyTrame1.setTypeDevice('T');
+		ProxyTrameS proxyTrame2 = new ProxyTrameS(timestamp, 'S', 'A', tempDevice.getIdLogique(), 'T');
 		listeTramesS.add(proxyTrame2);
 		
-		ProxyTrameS proxyTrame3 = new ProxyTrameS();
-		proxyTrame1.setTimestamp(timestamp);
-		proxyTrame1.setType('S');
-		proxyTrame1.setDeviceId(presDevice.getIdLogique());
-		proxyTrame1.setTypeMessage('A'); //add
-		proxyTrame1.setTypeDevice('P');
+		ProxyTrameS proxyTrame3 = new ProxyTrameS(timestamp, 'S', 'A', presDevice.getIdLogique(), 'P');
 		listeTramesS.add(proxyTrame3);
 		
 		return listeTramesS;
 	}
 	
 	
-	public static ArrayList<ProxyTrame> parseTrameD(long idPhysique, char[] trame, long timestamp) {
+	public static List<ProxyTrame> parseTrameD(long idPhysique, char[] trame, long timestamp) {
 		
 		System.out.println("Parseur : dans parseTrameD");
 		
-		ArrayList<ProxyTrame> listeProxyTrames = new ArrayList<ProxyTrame>();
+		List<ProxyTrame> listeProxyTrames = new ArrayList<ProxyTrame>();
 
 		// Chercher id dans la map
 		DevicePhysique devPhysique = EnsembleDevices.getDevicePhysiqueByID(idPhysique);
@@ -228,17 +209,14 @@ public class Parseur implements Runnable {
 	
 	//1 Interrupteur physique = 1 capteur logique
 	
-	public static ArrayList<ProxyTrame> parseTypeInterrupteur (char[] trame, DevicePhysique devPhysique, long timestamp)
+	public static List<ProxyTrame> parseTypeInterrupteur (char[] trame, DevicePhysique devPhysique, long timestamp)
 	{
 		System.out.println("Parseur : dans parseTypeInterrupteur");
 		
-		ArrayList<ProxyTrame> listeTrames = new ArrayList<ProxyTrame>();
+		List<ProxyTrame> listeTrames = new ArrayList<ProxyTrame>();
 		DeviceLogique devLog = devPhysique.getListeDevicesLogiques().get(0);
 		
-		ProxyTrameD proxyTrameD1 = new ProxyTrameD(); 
-		proxyTrameD1.setTimestamp(timestamp);
-		proxyTrameD1.setType('D');
-		proxyTrameD1.setDeviceId(devLog.getIdLogique());
+		ProxyTrameD proxyTrameD1 = new ProxyTrameD(timestamp, 'D', devLog.getIdLogique()); 
 
 		int status1 = Integer.parseInt(""+trame[Constantes.STATUS_1],16);
 		int dataByte3_1 = Integer.parseInt(""+trame[Constantes.DATA_BYTE_3_1], 16);
@@ -291,10 +269,7 @@ public class Parseur implements Runnable {
 			if((dataByte3_2 & 1) == 1) //there's a second action
 			{
 		
-				ProxyTrameD proxyTrameD2 = new ProxyTrameD();
-				proxyTrameD2.setTimestamp(timestamp);
-				proxyTrameD2.setType('D');
-				proxyTrameD2.setDeviceId(devLog.getIdLogique());
+				ProxyTrameD proxyTrameD2 = new ProxyTrameD(timestamp, 'D', devLog.getIdLogique());
 				
 				if (dataByte3_2 == 0 || dataByte3_2 == 1) //channel A1
 				{
@@ -336,31 +311,24 @@ public class Parseur implements Runnable {
 			}
 			else if ((dataByte3_1 & 14) == 6) // 3 or 4 buttons pressed
 			{
-				ProxyTrameD proxyTrameErr1 = new ProxyTrameD();
-				proxyTrameErr1.setDeviceId(devLog.getIdLogique());
+				ProxyTrameD proxyTrameErr1 = new ProxyTrameD(timestamp, Constantes.TYPE_DONNEES, devLog.getIdLogique());
 				proxyTrameErr1.setValeurLue(-1);
-				proxyTrameErr1.setTimestamp(timestamp);
-				proxyTrameErr1.setType(Constantes.TYPE_DONNEES);
 				listeTrames.add(proxyTrameErr1);
 			}
 		}
 		return listeTrames;
 	}
 	
-	public static ArrayList<ProxyTrame> parseTypeContact(char[] trame, DevicePhysique devPhysique, long timestamp)
+	public static List<ProxyTrame> parseTypeContact(char[] trame, DevicePhysique devPhysique, long timestamp)
 	{
 		System.out.println("Parseur : dans parseTypeContact");
-		ArrayList<ProxyTrame> listeTrames = new ArrayList<ProxyTrame>();
-		ProxyTrameD proxyTrameD = new ProxyTrameD();
-		
+		List<ProxyTrame> listeTrames = new ArrayList<ProxyTrame>();
+
 		int dataByte3_2 = Integer.parseInt(""+trame[Constantes.DATA_BYTE_3_2],16);
-		
-		proxyTrameD.setValeurLue(dataByte3_2 & 1);
+
 		DeviceLogique devLog = devPhysique.getListeDevicesLogiques().get(0);
-		proxyTrameD.setDeviceId(devLog.getIdLogique());
-		
-		proxyTrameD.setType(Constantes.TYPE_DONNEES);
-		proxyTrameD.setTimestamp(timestamp);
+		ProxyTrameD proxyTrameD = new ProxyTrameD(timestamp, Constantes.TYPE_DONNEES, devLog.getIdLogique());
+		proxyTrameD.setValeurLue(dataByte3_2 & 1);
 		
 		listeTrames.add(proxyTrameD);
 		return listeTrames;
@@ -374,10 +342,10 @@ public class Parseur implements Runnable {
 		return idPhysique;
 	}
 
-	public static ArrayList<ProxyTrame> parseTypeLTO (char[] trame, DevicePhysique devPhysique, long timestamp)
+	public static List<ProxyTrame> parseTypeLTO (char[] trame, DevicePhysique devPhysique, long timestamp)
 	{
 		System.out.println("Parseur : dans parseTypeLTO");
-		ArrayList<ProxyTrame> listeTrames = new ArrayList<ProxyTrame>();
+		List<ProxyTrame> listeTrames = new ArrayList<ProxyTrame>();
 	
 		int luminositeTh = Integer.parseInt(""+trame[Constantes.DATA_BYTE_2_1]+trame[Constantes.DATA_BYTE_2_2],16);
 		int temperatureTh = Integer.parseInt(""+trame[Constantes.DATA_BYTE_1_1]+trame[Constantes.DATA_BYTE_1_2],16);
@@ -395,24 +363,15 @@ public class Parseur implements Runnable {
 		int luminosite = luminositeTh*510/255;
 		int temperature = temperatureTh*51/255;
 		
-		ProxyTrameD proxyTrameD1 = new ProxyTrameD();
-		proxyTrameD1.setType('D');
-		proxyTrameD1.setTimestamp(timestamp);
-		proxyTrameD1.setDeviceId(devPhysique.getListeDevicesLogiques().get(0).getIdLogique());
+		ProxyTrameD proxyTrameD1 = new ProxyTrameD(timestamp, Constantes.TYPE_DONNEES, devPhysique.getListeDevicesLogiques().get(0).getIdLogique());
 		proxyTrameD1.setValeurLue(luminosite);
 		listeTrames.add(proxyTrameD1);
 		
-		ProxyTrameD proxyTrameD2 = new ProxyTrameD();
-		proxyTrameD2.setType('D');
-		proxyTrameD2.setTimestamp(timestamp);
-		proxyTrameD2.setDeviceId(devPhysique.getListeDevicesLogiques().get(1).getIdLogique());
+		ProxyTrameD proxyTrameD2 = new ProxyTrameD(timestamp, Constantes.TYPE_DONNEES, devPhysique.getListeDevicesLogiques().get(1).getIdLogique());
 		proxyTrameD2.setValeurLue(temperature);
 		listeTrames.add(proxyTrameD2);
 		
-		ProxyTrameD proxyTrameD3 = new ProxyTrameD();
-		proxyTrameD3.setType('D');
-		proxyTrameD3.setTimestamp(timestamp);
-		proxyTrameD3.setDeviceId(devPhysique.getListeDevicesLogiques().get(2).getIdLogique());
+		ProxyTrameD proxyTrameD3 = new ProxyTrameD(timestamp, Constantes.TYPE_DONNEES, devPhysique.getListeDevicesLogiques().get(2).getIdLogique());
 		proxyTrameD3.setValeurLue(presence);
 		listeTrames.add(proxyTrameD3);
 		
@@ -444,7 +403,7 @@ public class Parseur implements Runnable {
 				trame = listeTrames.remove(0);
 				listeTrames.notify();
 			}
-			ArrayList<ProxyTrame> listeProxyTrames = parseTrame(trame);
+			List<ProxyTrame> listeProxyTrames = parseTrame(trame);
 			if((listeProxyTrames != null) && (listeProxyTrames.size() != 0)){
 				for(int i=0; i<listeProxyTrames.size(); i++) {
 					// Mettre la trame dans la liste des trames à envoyer

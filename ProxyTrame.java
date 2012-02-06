@@ -1,7 +1,9 @@
 import java.io.Serializable;
 
-
-public class ProxyTrame implements Serializable
+/**
+ * Classe abstraite ProxyTrame
+ */
+public abstract class ProxyTrame implements Serializable
 
 {
 	//public Timestamp timestamp;
@@ -28,8 +30,10 @@ public class ProxyTrame implements Serializable
 		this.type = type;
 	}
 	
-	public String encodeTrame() {
-		
-	}
+	/**
+	 * Encode les attributs de la classe
+	 * @return
+	 */
+	public abstract String encodeTrame();
 
 }

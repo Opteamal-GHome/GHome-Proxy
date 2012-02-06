@@ -84,10 +84,14 @@ public class ClientEnvoiGHome  implements Runnable {
 		System.out.println("ClientEnvoiGHome : dans envoyerProxyTrame");
 		try {
 			ObjectOutputStream outToServer = new ObjectOutputStream(_socket.getOutputStream());
-			outToServer.writeObject(proxyTrame);
+			//outToServer.writeObject(proxyTrame);
 			
-			
-			//outToServer.writeObject("Coucou");
+			// On recupere les bytes correspondant aux attributs de proxyTrame
+			String chaine = proxyTrame.encodeTrame();
+			byte[] chaineTransformee = chaine.getBytes();
+						
+			// On l'envoie
+			outToServer.write(chaineTransformee);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -25,4 +25,9 @@ public class ProxyTrameD extends ProxyTrame implements Serializable {
 	public void setValeurLue(int valeurLue) {
 		this.valeurLue = valeurLue;
 	}
+
+	@Override
+	public String encodeTrame() {
+		return deviceId + valeurLue + "";
+	}
 }

@@ -38,4 +38,9 @@ public class ProxyTrameS extends ProxyTrame implements Serializable
 	public char getTypeDevice() {
 		return typeDevice;
 	}
+
+	@Override
+	public String encodeTrame() {
+		return "" + typeMessage + deviceId + typeDevice;
+	}
 }

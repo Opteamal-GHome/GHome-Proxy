@@ -1,5 +1,5 @@
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -16,7 +16,7 @@ public class EnsembleDevices {
 		mapDevicesPhysiques.put(nouveauIDPysique, nouveauDevicePhysique);
 		
 		// Ajout des capteurs logiques correspondants
-		ArrayList<DeviceLogique> v = nouveauDevicePhysique.getListeDevicesLogiques();
+		List<DeviceLogique> v = nouveauDevicePhysique.getListeDevicesLogiques();
 		for(int i=0; i<v.size(); i++){
 			DeviceLogique dl = v.get(i);
 			mapDevicesLogiques.put(dl.getIdLogique(), dl);
@@ -32,7 +32,7 @@ public class EnsembleDevices {
 		mapDevicesLogiques.remove(idLogique);
 		
 		DevicePhysique dp = dl.getDevicePhysique();
-		ArrayList<DeviceLogique> vDL= dp.getListeDevicesLogiques();
+		List<DeviceLogique> vDL= dp.getListeDevicesLogiques();
 		
 		for (int i = 0; i < vDL.size(); i++)
 		{

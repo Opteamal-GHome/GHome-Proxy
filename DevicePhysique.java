@@ -1,14 +1,15 @@
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.Timer;
 
 public class DevicePhysique {
 	private long idPhysique;
 	private String typePhysique;
-	private ArrayList<DeviceLogique> listeDevicesLogiques = new ArrayList<DeviceLogique>();
+	private List<DeviceLogique> listeDevicesLogiques = new ArrayList<DeviceLogique>();
 	private Timer timerDevice;
 	
-	public DevicePhysique(long idPhysique, String typePhysique,ArrayList<DeviceLogique> listeDevicesLogiques) {
+	public DevicePhysique(long idPhysique, String typePhysique,List<DeviceLogique> listeDevicesLogiques) {
 		this.idPhysique = idPhysique;
 		this.typePhysique = typePhysique;
 		this.listeDevicesLogiques = listeDevicesLogiques;
@@ -18,11 +19,11 @@ public class DevicePhysique {
 		this.timerDevice = new Timer(Constantes.DELAI_DECLENCHEMENT_TIMER, taskPerformer);
 	}
 
-	public ArrayList<DeviceLogique> getListeDevicesLogiques() {
+	public List<DeviceLogique> getListeDevicesLogiques() {
 		return listeDevicesLogiques;
 	}
 
-	public void setListeDevicesLogiques(ArrayList<DeviceLogique> listeDevicesLogiques) {
+	public void setListeDevicesLogiques(List<DeviceLogique> listeDevicesLogiques) {
 		this.listeDevicesLogiques = listeDevicesLogiques;
 	}
 

@@ -3,6 +3,7 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class ClientEnvoiGHome  implements Runnable {
@@ -10,7 +11,7 @@ public class ClientEnvoiGHome  implements Runnable {
 	private Thread clientEnvoiThread = null;
 	private Socket _socket;
 	public boolean continuer = true;
-	public static ArrayList<ProxyTrame> listeProxyTrames;
+	public static List<ProxyTrame> listeProxyTrames;
 
 	public ClientEnvoiGHome(InetAddress adresseIP, int port) {
 

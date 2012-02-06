@@ -1,5 +1,4 @@
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 
 public class ProxyTrame implements Serializable

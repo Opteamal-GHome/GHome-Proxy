@@ -1,7 +1,4 @@
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Vector;
 
 import javax.swing.Timer;
 
@@ -16,7 +13,7 @@ public class DevicePhysique {
 		this.typePhysique = typePhysique;
 		this.listeDevicesLogiques = listeDevicesLogiques;
 		
-		// Création du timer
+		// Crï¿½ation du timer
 		TimerListener taskPerformer = new TimerListener(this);
 		this.timerDevice = new Timer(Constantes.DELAI_DECLENCHEMENT_TIMER, taskPerformer);
 	}
@@ -38,12 +35,12 @@ public class DevicePhysique {
 	}
 	
 	public void demarrerTimer(){
-		System.out.println("On démarre le timer");
+		System.out.println("On dï¿½marre le timer");
 		this.timerDevice.start();
 	}
 	
 	public void redemarrerTimer(){
-		System.out.println("On redémarre le timer");
+		System.out.println("On redï¿½marre le timer");
 		this.timerDevice.restart();
 	}
 }

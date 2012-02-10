@@ -50,7 +50,7 @@ public class ClientEnvoieBase implements Runnable
 				String messageToSend = null;
 				synchronized(toSend)
 				{
-					if (toSend.size() == 0){
+					if (toSend.isEmpty()){
 						try {
 							toSend.wait();
 						} catch (InterruptedException e) {
@@ -58,7 +58,10 @@ public class ClientEnvoieBase implements Runnable
 							e.printStackTrace();
 						}
 					}
-					messageToSend = toSend.remove(0);
+					if(!toSend.isEmpty()) {
+						messageToSend = toSend.remove(0);
+					}
+					
 					toSend.notify(); // necessary ?
 				}
 				

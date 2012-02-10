@@ -27,7 +27,14 @@ public class ProxyTrameD extends ProxyTrame implements Serializable {
 	}
 
 	@Override
-	public String encodeTrame() {
-		return deviceId + valeurLue + "";
+	public byte[] encodeTrame() {
+		byte[] deviceI = Utilitaires.intToByteArray(deviceId);
+		byte[] valeurL = Utilitaires.intToByteArray(valeurLue);
+		
+		return Utilitaires.concat(deviceI, valeurL);
 	}
+	
+
+	
+	
 }

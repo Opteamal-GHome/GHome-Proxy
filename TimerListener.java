@@ -24,7 +24,7 @@ public class TimerListener implements ActionListener {
 			char typeCapteurLogique = capteurLogique.getTypeLogique();
 			ProxyTrameS proxyTrameS = new ProxyTrameS(timestamp, typeTrame, typeStatus, idCapteurLogique, typeCapteurLogique);
 
-			System.out.println("TimerListener : Type de trame : " + proxyTrameS.getTypeDevice());
+			System.out.println("TimerListener : Type de capteur : " + proxyTrameS.getTypeDevice());
 			System.out.println("TimerListener : Avant envoi trame n°" + i);
 			// Ajout des trames à envoyer
 			ClientEnvoiGHome.addProxyTrame(proxyTrameS);

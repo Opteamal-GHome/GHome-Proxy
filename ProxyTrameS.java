@@ -40,7 +40,15 @@ public class ProxyTrameS extends ProxyTrame implements Serializable
 	}
 
 	@Override
-	public String encodeTrame() {
-		return "" + typeMessage + deviceId + typeDevice;
+	public byte[] encodeTrame() {
+		byte[] typeM = ("" + typeMessage).getBytes();
+		byte[] deviceI = Utilitaires.intToByteArray(deviceId);
+		byte[] typeD = Utilitaires.intToByteArray(typeDevice);
+		
+		// Concatenation
+		byte[] tab1 = Utilitaires.concat(typeM, deviceI);
+		byte[] tabFinal = Utilitaires.concat(tab1, typeD);
+		
+		return tabFinal;
 	}
 }

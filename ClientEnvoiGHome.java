@@ -99,7 +99,6 @@ public class ClientEnvoiGHome  implements Runnable {
 		
 		System.out.println("ClientEnvoiGHome : dans envoyerProxyTrame");
 		try {
-			String chaine = "";
 			
 			// On recupere le timestamp
 			Long timestamp = proxyTrame.getTimestamp();
@@ -120,9 +119,13 @@ public class ClientEnvoiGHome  implements Runnable {
 						
 			// On l'envoie
 			if(socket.isConnected()) {
+				
 				DataOutputStream dataReturn = new DataOutputStream(socket.getOutputStream());
+				System.out.print("Trame envoi : ");
+				for (int i=0; i < both.length; i++) { System.out.print(both[i]); System.out.print(" "); }
+				System.out.println("");
 				dataReturn.write(both);
-				System.out.println(chaine);
+				
 			}
 			
 		} catch (IOException e) {

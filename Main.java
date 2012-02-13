@@ -17,27 +17,25 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 
 		// Création d'un capteur de contact
-		DevicePhysique contact = new DevicePhysique(Constantes.ID_CONTACT,
-				Constantes.TYPE_P_CONTACT, null);
-		DeviceLogique contactLogique = new DeviceLogique(EnsembleDevices
-				.getNextIdLogique(), Constantes.TYPE_L_CONTACT, contact);
+		DevicePhysique contact = new DevicePhysique(Constantes.ID_CONTACT,Constantes.TYPE_P_CONTACT, null);
+		DeviceLogique contactLogique = new DeviceLogique(EnsembleDevices.getNextIdLogique(), Constantes.TYPE_L_CONTACT, contact);
 		List<DeviceLogique> listeDevLogContact = new ArrayList<DeviceLogique>();
 		listeDevLogContact.add(contactLogique);
 		contact.setListeDevicesLogiques(listeDevLogContact);
 		EnsembleDevices.ajouterDevice(Constantes.ID_CONTACT, contact);
 
 		// Création d'un interrupteur rocker switch 2
-		DevicePhysique interrupteur = new DevicePhysique(
-				Constantes.ID_INTERRUPTEUR_4, Constantes.TYPE_P_INTERRUPTEUR_4,
-				null);
-		List<DeviceLogique> listeDevLogInt = new ArrayList<DeviceLogique>();
-		DeviceLogique interrupteurLogique = new DeviceLogique(EnsembleDevices
-				.getNextIdLogique(), Constantes.TYPE_L_INTERRUPTEUR,
-				interrupteur);
-		listeDevLogInt.add(interrupteurLogique);
-		interrupteur.setListeDevicesLogiques(listeDevLogInt);
-		EnsembleDevices.ajouterDevice(Constantes.ID_INTERRUPTEUR_4,
-				interrupteur);
+//		DevicePhysique interrupteur = new DevicePhysique(
+//				Constantes.ID_INTERRUPTEUR_4, Constantes.TYPE_P_INTERRUPTEUR_4,
+//				null);
+//		List<DeviceLogique> listeDevLogInt = new ArrayList<DeviceLogique>();
+//		DeviceLogique interrupteurLogique = new DeviceLogique(EnsembleDevices
+//				.getNextIdLogique(), Constantes.TYPE_L_INTERRUPTEUR,
+//				interrupteur);
+//		listeDevLogInt.add(interrupteurLogique);
+//		interrupteur.setListeDevicesLogiques(listeDevLogInt);
+//		EnsembleDevices.ajouterDevice(Constantes.ID_INTERRUPTEUR_4,
+//				interrupteur);
 
 		// Création d'un capteur présence
 		// DevicePhysique presence = new DevicePhysique(Constantes.ID_PRESENCE,
@@ -52,17 +50,13 @@ public class Main {
 		// presence.setListeDevicesLogiques(listeDevLogPre);
 		// EnsembleDevices.ajouterDevice(Constantes.ID_PRESENCE, presence);
 
-		// Création d'un actionneur (prise)
-		// DevicePhysique prise = new DevicePhysique(Constantes.ID_PRISE,
-		// "06-00-01", null);
-		// ArrayList<DeviceLogique> listeDevLogPrise = new
-		// ArrayList<DeviceLogique>();
-		// DeviceLogique priseLogique = new
-		// DeviceLogique(EnsembleDevices.getNextIdLogique(),
-		// Constantes.TYPE_L_ACTIONNEUR, prise);
-		// listeDevLogPrise.add(priseLogique);
-		// prise.setListeDevicesLogiques(listeDevLogPrise);
-		// EnsembleDevices.ajouterDevice(Constantes.ID_PRISE, prise);
+		 //Création d'un actionneur (prise)
+		 DevicePhysique prise = new DevicePhysique(Constantes.ID_PRISE, "06-00-01", null);
+		 ArrayList<DeviceLogique> listeDevLogPrise = new ArrayList<DeviceLogique>();
+		 DeviceLogique priseLogique = new DeviceLogique(EnsembleDevices.getNextIdLogique(), Constantes.TYPE_L_ACTIONNEUR, prise);
+		 listeDevLogPrise.add(priseLogique);
+		 prise.setListeDevicesLogiques(listeDevLogPrise);
+		 EnsembleDevices.ajouterDevice(Constantes.ID_PRISE, prise);
 
 		// TODO Vérifier ordre de création + faire le lancement des threads
 		// (start) dans le main plutôt que dans les constructeurs
@@ -78,14 +72,13 @@ public class Main {
 		// interrupteur.demarrerTimer();
 
 		// Lancement du Thread d'envoi
-		 try {
-		 ClientEnvoieBase clientBase = new
-		 ClientEnvoieBase(InetAddress.getByName(Constantes.IP_BASE),
+		 /*try {
+		 ClientEnvoieBase clientBase = new ClientEnvoieBase(InetAddress.getByName(Constantes.IP_BASE),
 		 Constantes.PORT_BASE);
 		 } catch (UnknownHostException e) {
 		 // TODO Auto-generated catch block
 		 e.printStackTrace();
-		 }
+		 }*/
 
 		// Creation d'un socket pour GHome
 		Socket socket = new Socket(InetAddress.getByName(Constantes.IP_GHOME),
@@ -148,11 +141,11 @@ public class Main {
 
 		// send command telegram to device
 		// ClientEnvoieBase.addToList("A55A6B0570000000FF9F1E073000");
-		ClientEnvoieBase.addToList("A55A6B0550000000FF9F1E073000"); // turns on
+		//ClientEnvoieBase.addToList("A55A6B0550000000FF9F1E073000"); // turns on
 																	// the
 																	// contact
 		try {
-			ClientEnvoieBase c = new ClientEnvoieBase(InetAddress
+			new ClientEnvoieBase(InetAddress
 					.getByName(Constantes.IP_BASE), Constantes.PORT_BASE);
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block

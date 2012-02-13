@@ -34,5 +34,17 @@ public class Utilitaires {
 	         (byte)((l >> 0) & 0xff),
 	     };
 	 }
+	
+	public static String stringToHexa(String texte) { 
+        int c;//int's equivalent to char 
+        char s=' ';//separator 
+        //To safe memory - limite gc requests 
+        StringBuffer buff = new StringBuffer(texte.length()); 
+        for (int i = 0; i < texte.length(); i++) { 
+            c=texte.charAt(i); 
+            buff.append(Integer.toHexString(c)).append(s); 
+        } 
+        return buff.toString(); 
+    }
 
 }

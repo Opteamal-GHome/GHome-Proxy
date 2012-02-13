@@ -55,10 +55,12 @@ public class Parseur implements Runnable {
 		{
 			//parse frame of type 'S' for devices without teachin
 			System.out.println("capteur inconnu !");
+			//listeProxyTrames = parseTrameD(Long.parseLong("0001B596",16), trame, timestamp);		// TODO A supprimer !!!!
 		}
 		else // Trame de données
 		{
 			// remettre le watchdog à 0 (car on a bien reçu une trame de ce capteur)
+			System.out.println("dans parseTrameData");
 			EnsembleDevices.getDevicePhysiqueByID(id).redemarrerTimer();
 			listeProxyTrames = parseTrameD(id, trame, timestamp);
 		}
@@ -374,7 +376,7 @@ public class Parseur implements Runnable {
 		ProxyTrameD proxyTrameD3 = new ProxyTrameD(timestamp, Constantes.TYPE_DONNEES, devPhysique.getListeDevicesLogiques().get(2).getIdLogique());
 		proxyTrameD3.setValeurLue(presence);
 		listeTrames.add(proxyTrameD3);
-		
+				
 		return listeTrames;
 	}
 	
@@ -394,17 +396,22 @@ public class Parseur implements Runnable {
 			synchronized (listeTrames) {
 				if(listeTrames.isEmpty()){
 					try {
+						System.out.print("Entree");
 						listeTrames.wait();
+						System.out.print("Sortie");
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
 				trame = listeTrames.remove(0);
+				
 				listeTrames.notify();
 			}
+			System.out.println("before parseTrame");
 			List<ProxyTrame> listeProxyTrames = parseTrame(trame);
 			if((listeProxyTrames != null) && (listeProxyTrames.size() != 0)){
+				System.out.println("adding frame to clientEnvoiGHome");
 				for(int i=0; i<listeProxyTrames.size(); i++) {
 					// Mettre la trame dans la liste des trames à envoyer
 					ClientEnvoiGHome.addProxyTrame(listeProxyTrames.get(i));

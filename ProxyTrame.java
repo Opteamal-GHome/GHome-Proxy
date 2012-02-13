@@ -40,6 +40,6 @@ public abstract class ProxyTrame implements Serializable
 	 * Encode les attributs de la classe
 	 * @return
 	 */
-	public abstract String encodeTrame();
+	public abstract byte[] encodeTrame();
 
 }

@@ -1,20 +1,15 @@
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 
 public class ClientEnvoiGHome  implements Runnable {
 
 	private Thread clientEnvoiThread = null;
-	private Socket _socket;
+	private Socket socket;
 	public boolean continuer = true;
 	public static List<ProxyTrame> listeProxyTrames;
 
@@ -27,7 +22,7 @@ public class ClientEnvoiGHome  implements Runnable {
 
 		// Création du socket
 		try {
-			_socket = new Socket(adresseIP, port);
+			socket = new Socket(adresseIP, port);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -40,6 +35,21 @@ public class ClientEnvoiGHome  implements Runnable {
 
 		// Lancement du Thread
 		clientEnvoiThread.start();
+	}
+	
+	public ClientEnvoiGHome(Socket socket) {
+		this.socket = socket;
+		
+		// Lancement Thread
+		//this.clientEnvoiThread = new Thread(this);
+		
+		// Création de la liste
+		listeProxyTrames = new ArrayList<ProxyTrame>();
+
+		// Lancement du Thread
+		//clientEnvoiThread.start();
+		
+		System.out.println("Constructeur Envoi GHome OK");
 	}
 
 	@Override
@@ -69,7 +79,7 @@ public class ClientEnvoiGHome  implements Runnable {
 			envoyerProxyTrame(proxyTrame);
 		}
 		try {
-			_socket.close();
+			socket.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -96,21 +106,21 @@ public class ClientEnvoiGHome  implements Runnable {
 			timestamp = timestamp / 1000;
 			timestamp = (long) Math.round(timestamp);
 			
-			byte[] timestampB = toByteArray(timestamp);
+			byte[] timestampB = Utilitaires.toByteArray(timestamp);
 
 			// On recupere le type de la trame
-			chaine += proxyTrame.getType();
+			byte[] typeTrame =  (proxyTrame.getType()+"").getBytes();
 
 			// On recupere les bytes correspondant aux attributs de proxyTrame
-			chaine += proxyTrame.encodeTrame();
-			byte[] chaineTransformee = chaine.getBytes();
+			byte[] resteTrame = proxyTrame.encodeTrame();
 			
-			// On concatene les deux 
-			byte[] both= concat(timestampB, chaineTransformee);
+			// On concatene les trois
+			byte[] both1 = Utilitaires.concat(timestampB, typeTrame);
+			byte[] both= Utilitaires.concat(both1, resteTrame);
 						
 			// On l'envoie
-			if(_socket.isConnected()) {
-				DataOutputStream dataReturn = new DataOutputStream(_socket.getOutputStream());
+			if(socket.isConnected()) {
+				DataOutputStream dataReturn = new DataOutputStream(socket.getOutputStream());
 				dataReturn.write(both);
 				System.out.println(chaine);
 			}
@@ -121,23 +131,6 @@ public class ClientEnvoiGHome  implements Runnable {
 		}
 	}
 	
-	public static byte[] concat(byte[] first, byte[] second) {
-		byte[] result = Arrays.copyOf(first, first.length + second.length);
-		  System.arraycopy(second, 0, result, first.length, second.length);
-		  return result;
-		}
-	
-	public static byte[] toByteArray(long l) {
-	     return new byte[] { 
-	        (byte)((l >> 56) & 0xff),
-	         (byte)((l >> 48) & 0xff),
-	         (byte)((l >> 40) & 0xff),
-	         (byte)((l >> 32) & 0xff),
-	         (byte)((l >> 24) & 0xff),
-	         (byte)((l >> 16) & 0xff),
-	         (byte)((l >> 8) & 0xff),
-	         (byte)((l >> 0) & 0xff),
-	     };
-	 }
+
 
 }

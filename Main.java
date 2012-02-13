@@ -3,6 +3,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.List;
 
 import meteo.Meteo;
 
@@ -16,14 +17,12 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 
 		// Création d'un capteur de contact
-//		DevicePhysique contact = new DevicePhysique(Constantes.ID_CONTACT,
-//				Constantes.TYPE_P_CONTACT, null);
-//		DeviceLogique contactLogique = new DeviceLogique(EnsembleDevices
-//				.getNextIdLogique(), Constantes.TYPE_L_CONTACT, contact);
-//		List<DeviceLogique> listeDevLogContact = new ArrayList<DeviceLogique>();
-//		listeDevLogContact.add(contactLogique);
-//		contact.setListeDevicesLogiques(listeDevLogContact);
-//		EnsembleDevices.ajouterDevice(Constantes.ID_CONTACT, contact);
+		DevicePhysique contact = new DevicePhysique(Constantes.ID_CONTACT,Constantes.TYPE_P_CONTACT, null);
+		DeviceLogique contactLogique = new DeviceLogique(EnsembleDevices.getNextIdLogique(), Constantes.TYPE_L_CONTACT, contact);
+		List<DeviceLogique> listeDevLogContact = new ArrayList<DeviceLogique>();
+		listeDevLogContact.add(contactLogique);
+		contact.setListeDevicesLogiques(listeDevLogContact);
+		EnsembleDevices.ajouterDevice(Constantes.ID_CONTACT, contact);
 
 		// Création d'un interrupteur rocker switch 2
 //		DevicePhysique interrupteur = new DevicePhysique(

@@ -119,11 +119,13 @@ public class ClientEnvoiGHome  implements Runnable {
 						
 			// On l'envoie
 			if(socket.isConnected()) {
+				
 				DataOutputStream dataReturn = new DataOutputStream(socket.getOutputStream());
 				System.out.print("Trame envoi : ");
 				for (int i=0; i < both.length; i++) { System.out.print(both[i]); System.out.print(" "); }
 				System.out.println("");
 				dataReturn.write(both);
+				
 			}
 			
 		} catch (IOException e) {

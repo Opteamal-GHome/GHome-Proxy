@@ -374,7 +374,7 @@ public class Parseur implements Runnable {
 		ProxyTrameD proxyTrameD3 = new ProxyTrameD(timestamp, Constantes.TYPE_DONNEES, devPhysique.getListeDevicesLogiques().get(2).getIdLogique());
 		proxyTrameD3.setValeurLue(presence);
 		listeTrames.add(proxyTrameD3);
-		
+				
 		return listeTrames;
 	}
 	

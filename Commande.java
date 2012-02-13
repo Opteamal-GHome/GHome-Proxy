@@ -20,39 +20,60 @@ public class Commande implements Runnable {
 		}
 	}
 
-	public List<String> createCommands(/* byte[] */ByteBuffer buffer) {
+	public List<String> createCommands(ByteBuffer buffer) {
 		// ByteBuffer bb = ByteBuffer.allocate(18);
 		// continet toute l'information en bytes
+		
+		for (int i=0; i < buffer.capacity(); i++) {
+			System.out.print(buffer.get(i));
+			System.out.print(" ");
+		}
 
-		System.out.println("In createCommands ");
+		System.out.println("In createCommands " + buffer.capacity());
 		List<String> commands = new ArrayList<String>();
 		// TODO extract corresponding bytes
-		char typeOfMessage = 'x'; // 'O' -> order
+		//char typeOfMessage = 'x'; // 'O' -> order
 		int idLogique = -1; // device to command
 		int data = -1; // 1 to turn on, 0 to turn off
+		
+		/* On recupere le 8e octet du buffer. Celui qui provient du serveur est code sur
+		 * 1 octet. Un char en Java fait 2 octets.
+		 * On procede donc a une transformation vers UTF-8
+		 */
+		byte[] bufferTypeOfMess = new byte[1];
+		bufferTypeOfMess[0] = buffer.get(8);
+		String typeOfMess = "";
+		try {
+			typeOfMess = new String(bufferTypeOfMess, "UTF-8");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-		typeOfMessage = buffer.getChar(8); // get char starting with the 8th
-											// byte in the buffer
 		idLogique = buffer.getInt(9);
+		System.out.println("idLogique : " + idLogique);
+
 		data = buffer.getInt(13); // get the int corresponding to the command
-		System.out.println("timestamp : " + buffer.getLong(0) + " - Type : " + typeOfMessage + " - idLogique : "
+		System.out.println("timestamp : " + buffer.getLong(0) + " - Type : " + typeOfMess + " - idLogique : "
 				+ idLogique + "  - data : " + data);
 		DeviceLogique devLog = EnsembleDevices.getDeviceLogiquebyID(idLogique);
 		DevicePhysique devPhy = devLog.getDevicePhysique();
 
-		if (typeOfMessage == 'O') // frame of type Order
+		if (typeOfMess.equals("O")) // frame of type Order
 		{
 			if (devPhy.getIdPhysique() == Constantes.ID_PRISE) {
 				commands = createFrameForContact(data);
+				System.out.println("Commande : " + commands.get(0).toString());
 			}
 
 		}
 		return commands;
 	}
+	
 
 	public static List<String> createFrameForContact(int data) {
 		List<String> commands = new ArrayList<String>();
 		// create a TX-Telegram received from a Rocker Switch (RPS)
+		
 		String telegram = "A55A6B05";
 
 		if (data == 1) // open Contact; Button B1 pushed
@@ -75,26 +96,30 @@ public class Commande implements Runnable {
 	}
 
 	public void run() {
-		synchronized (listeTramesCommande) {
-			if (listeTramesCommande.isEmpty()) {
-				try {
-					listeTramesCommande.wait();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+		while(true) {
+			synchronized (listeTramesCommande) {
+				if (listeTramesCommande.isEmpty()) {
+					try {
+						listeTramesCommande.wait();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	
+				}
+	
+				if (listeTramesCommande.size() > 0) {
+					List<String> commandes = createCommands(listeTramesCommande.remove(0));
+					listeTramesCommande.notify(); 
+					if (commandes != null && commandes.size() > 0) {
+						System.out.println("Rentree dans la boucle magique !");
+						for (int i = 0; i < commandes.size(); i++) {
+							ClientEnvoieBase.addToList(commandes.get(i));
+						}
+					}
 				}
 
 			}
-
-			List<String> commandes = createCommands(listeTramesCommande
-					.remove(0));
-			listeTramesCommande.notify(); // necessary ?
-			if (commandes != null && commandes.size() > 0) {
-				for (int i = 0; i < commandes.size(); i++) {
-					ClientEnvoieBase.addToList(commandes.get(i));
-				}
-			}
-
 		}
 
 	}

@@ -54,17 +54,15 @@ public class ClientLectureGHome implements Runnable {
 	@Override
 	public void run() {
 		InputStream input = null;
-		try {
-			input = socket.getInputStream();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 		while (continuer) {
 			System.out.println("ClientLectureGHome : Dans le while");
 			
 
 			try {
+				
+				// Lit la valeur du socket
+				input = socket.getInputStream();
 				
 				System.out.println("input available ClientLectureGHome : " + input.available());
 				InputStreamReader isr = new InputStreamReader(input);
@@ -73,12 +71,32 @@ public class ClientLectureGHome implements Runnable {
 				in = new BufferedReader(isr);
 				System.out.println("Apres in ClientLectureGHome : ");
 				if (in.ready()) {
-					String message = in.readLine();
-					System.out.println("Client Lecture GHome : Message recu : "
-							+ message);
-					ByteBuffer bbuffer = encoder.encode(CharBuffer.wrap(message));
+					//String message = in.readLine();
+					String message;
+					char[] mess = new char[18];
+					in.read(mess, 0, 18);
+					message = new String(mess);
 					
-					Commande.addCommande(bbuffer);
+					System.out.println("Client Lecture GHome : Message recu : " + Utilitaires.stringToHexa(message));
+					//ByteBuffer bbuffer = encoder.encode(CharBuffer.wrap(message));
+					
+					byte[] timestampB = message.substring(0, 8).getBytes();
+					System.out.println(Utilitaires.stringToHexa(new String(timestampB)));
+					byte[] typeB = message.substring(8,9).getBytes("UTF-8");
+					System.out.println(Utilitaires.stringToHexa(new String(typeB)));
+					byte[] dataB = message.substring(9).getBytes();
+					System.out.println(Utilitaires.stringToHexa(new String(dataB)));
+					
+					byte[] both1 = Utilitaires.concat(timestampB, typeB);
+					byte[] both = Utilitaires.concat(both1, dataB);
+					
+					
+					ByteBuffer bbuffer = ByteBuffer.wrap(both);
+					
+					
+					if (!message.isEmpty()) {
+						Commande.addCommande(bbuffer);
+					}
 
 				} else {
 					System.out.println("dedans !!!");
@@ -88,12 +106,9 @@ public class ClientLectureGHome implements Runnable {
 				e1.printStackTrace();
 			}
 
-			System.out
-					.println("Apres reception d'un message ClientLectureGHome");
-
 			// On suspend le thread pour laisser les autres
 			
-			 try { clientLectureGhThread.sleep(500); } catch
+			try { clientLectureGhThread.sleep(1000); } catch
 			 (InterruptedException e) { // TODO Auto-generated catch block
 			 e.printStackTrace(); }
 			 
@@ -106,5 +121,7 @@ public class ClientLectureGHome implements Runnable {
 			}*/
 		}
 	}
+	
+	
 
 }

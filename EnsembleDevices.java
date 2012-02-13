@@ -8,7 +8,7 @@ import java.util.List;
 public class EnsembleDevices {
 	public static HashMap<Long, DevicePhysique> mapDevicesPhysiques = new HashMap<Long, DevicePhysique>();
 	public static HashMap<Integer, DeviceLogique> mapDevicesLogiques = new HashMap<Integer, DeviceLogique>();
-	public static int nextIDLogique = -1;
+	public static int nextIDLogique = 0;
 	
 	
 	public static void ajouterDevice(long nouveauIDPysique, DevicePhysique nouveauDevicePhysique)

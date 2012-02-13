@@ -37,11 +37,9 @@ public class Constantes {
 	//public final static int TYPE_P_INTERRUPTEUR_4 = 123;
 	public final static String TYPE_P_INTERRUPTEUR_4 = "05-02-01";
 	public final static long ID_INTERRUPTEUR_4 = Long.parseLong("0021CC07", 16);
-	//TODO check ID Prise
 	public final static long ID_PRISE = Long.parseLong("00FF9F1E07", 16);
-	public final static String TYPE_P_PRESENCE = "07-08-01";
+	public final static String TYPE_P_PRESENCE = "07-08-01"; //light, temp & occupancy
 	public final static long ID_PRESENCE = Long.parseLong("000053E7B", 16);
-	//public final static int TYPE_P_CONTACT = 245;
 	public final static String TYPE_P_CONTACT = "06-00-01";
 	public final static long ID_CONTACT = Long.parseLong("0001B596", 16);
 	

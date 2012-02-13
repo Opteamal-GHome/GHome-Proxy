@@ -1,5 +1,15 @@
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 
+import javax.swing.JFileChooser;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 public class Utilitaires {
 	
@@ -47,4 +57,35 @@ public class Utilitaires {
         return buff.toString(); 
     }
 
+    public static Element loadConfiguration(String path) 
+    {
+    	
+        // create a document factory
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = null;
+        Document document = null;
+        // create a document constructor
+        try {
+			docBuilder = factory.newDocumentBuilder();
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	File xml = new File(path);
+		try {
+				document = docBuilder.parse(xml);
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			  return document.getDocumentElement();
+      
+    }
+	
+	
+	
+	
 }

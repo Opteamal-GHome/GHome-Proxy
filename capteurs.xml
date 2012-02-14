@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Devices>
 	
-	<Dev id = "4288617991" eep = "06-00-01" type = "prise"/>
+	<Dev id = "4288617991" eep = "prise" type = "prise"/>
 	<Dev id = "2214919" eep = "05-02-01" type = "interrupteur"/>
 	<Dev id = "112022" eep = "06-00-01" type = "contact"/>
 	<Dev id = "12347" eep = "07-08-01" type = "light, temperature and occupancy"/>

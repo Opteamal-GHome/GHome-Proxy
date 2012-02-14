@@ -31,24 +31,22 @@ public class Main {
 
 		// Lancement du Thread d'envoi
 		 /*try {
-		 ClientEnvoieBase clientBase = new ClientEnvoieBase(InetAddress.getByName(Constantes.IP_BASE),
-		 Constantes.PORT_BASE);
+		 ClientEnvoieBase clientBase = new ClientEnvoieBase(InetAddress.getByName(Constantes.IP_BASE),Constantes.PORT_BASE);
 		 } catch (UnknownHostException e) {
 		 // TODO Auto-generated catch block
 		 e.printStackTrace();
 		 }*/
 
-		/*// Creation d'un socket pour GHome
-		Socket socket = new Socket(InetAddress.getByName(Constantes.IP_GHOME),
-				Constantes.PORT_GHOME);
+		// Creation d'un socket pour GHome
+		//Socket socket = new Socket(InetAddress.getByName(Constantes.IP_GHOME),Constantes.PORT_GHOME);
 
 		// Lancement des Threads GHome
-		new Thread(new ClientEnvoiGHome(socket)).start();
-		new Thread(new ClientLectureGHome(socket)).start();
+//		new Thread(new ClientEnvoiGHome(socket)).start();
+		//new Thread(new ClientLectureGHome(socket)).start();
 
 		// thread commande
-		new Commande();
-*/
+		//new Commande();
+
 		// Lancement du thread de réception des trames de la base
 		// try {
 		// ClientLectureBase clientLect = new
@@ -103,14 +101,13 @@ public class Main {
 																	// the
 																	// contact
 		/*try {
-			new ClientEnvoieBase(InetAddress
-					.getByName(Constantes.IP_BASE), Constantes.PORT_BASE);
+			new ClientEnvoieBase(InetAddress.getByName(Constantes.IP_BASE), Constantes.PORT_BASE);
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}*/
 
-		EnsembleDevices.parseXMLFile("D:/4IF/Ghome/src/capteurs.xml");
+		new ClientEnvoiGHome(InetAddress.getByName(Constantes.IP_GHOME),Constantes.PORT_GHOME);
 		
 	}
 

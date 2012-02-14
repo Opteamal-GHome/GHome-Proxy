@@ -60,7 +60,7 @@ public class EnsembleDevices {
 	}
 	
 	
-	public static void parseXMLFile(String path)
+	public static void parseDeviceFile(String path)
 	{
 		String tag = "Dev";
 		Element el = null;
@@ -75,13 +75,13 @@ public class EnsembleDevices {
 				for(i = 0; i < length; i++)
 				{
 					 el = (Element) listOfDev.item(i);
-					 addDevicesStatically((Long.parseLong(el.getAttribute("id"))),el.getAttribute("eep"));	 
+					 addDeviceStatically((Long.parseLong(el.getAttribute("id"))),el.getAttribute("eep"));	 
 				}
 			}
 		}
 	}
 
-	public static void addDevicesStatically (long id, String type)
+	public static void addDeviceStatically (long id, String type)
 	{
 		if(type.equals("06-00-01")) //contact 
 		{
@@ -92,12 +92,12 @@ public class EnsembleDevices {
 			contact.setListeDevicesLogiques(listeDevLogContact);
 			EnsembleDevices.ajouterDevice(id, contact);
 			
-			//System.out.println("adding a contact device");
+			System.out.println("adding a contact device");
 			
 		}
-		else if (type.equals("temperature")) //temperature
+		else if (type.equals("")) //temperature
 		{
-
+			//TODO finish this 
 			//System.out.println("adding a temperature device");
 		}
 		else if (type.equals("07-08-01")) //light, temperature and presence
@@ -116,7 +116,7 @@ public class EnsembleDevices {
 			 presence.setListeDevicesLogiques(listeDevLogPre);
 			 EnsembleDevices.ajouterDevice(id, presence);
 			 
-			 //System.out.println("adding a LTO device");
+			 System.out.println("adding a LTO device");
 			
 		}
 		else if (type.equals("05-02-01")) //switch
@@ -129,20 +129,19 @@ public class EnsembleDevices {
 			interrupteur.setListeDevicesLogiques(listeDevLogInt);
 			EnsembleDevices.ajouterDevice(Constantes.ID_INTERRUPTEUR_4,interrupteur);
 			
-			//System.out.println("adding a Rocker Switch device");
+			System.out.println("adding a Rocker Switch device");
 		}
 		
-		else if(type.equals("06-00-01")) 
-			//TODO check eep prise
+		else if(type.equals("prise")) 
 		{
-			DevicePhysique prise = new DevicePhysique(Constantes.ID_PRISE, "06-00-01", null);
+			DevicePhysique prise = new DevicePhysique(id, Constantes.TYPE_P_PRISE, null);
 			ArrayList<DeviceLogique> listeDevLogPrise = new ArrayList<DeviceLogique>();
 			DeviceLogique priseLogique = new DeviceLogique(EnsembleDevices.getNextIdLogique(), Constantes.TYPE_L_ACTIONNEUR, prise);
 			listeDevLogPrise.add(priseLogique);
 			prise.setListeDevicesLogiques(listeDevLogPrise);
-			EnsembleDevices.ajouterDevice(Constantes.ID_PRISE, prise);
+			EnsembleDevices.ajouterDevice(id, prise);
 			
-			//System.out.println("adding a contact (prise) device");
+			System.out.println("adding a contact (prise) device");
 		}
 	}
 }

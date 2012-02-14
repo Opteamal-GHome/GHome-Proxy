@@ -32,10 +32,46 @@ public class ClientEnvoiGHome  implements Runnable {
 
 		// Création de la liste
 		listeProxyTrames = new ArrayList<ProxyTrame>();
-
+		
 		// Lancement du Thread
 		clientEnvoiThread.start();
+		
+		//ajouter les capteurs et envoyer les trames d'ajout au serveur
+		this.init();
 	}
+	
+	private void init()
+	{
+		EnsembleDevices.parseDeviceFile(Constantes.pathToDeviceFile);
+		int i;
+		DevicePhysique devP;
+		List<DeviceLogique> devLogList;
+		int length = EnsembleDevices.mapDevicesPhysiques.size();
+		long timestamp = System.currentTimeMillis();
+		
+		for (long mapKey : EnsembleDevices.mapDevicesPhysiques.keySet()) 
+		{
+			devP = EnsembleDevices.mapDevicesPhysiques.get(mapKey);
+			devLogList = devP.getListeDevicesLogiques();
+			int j;
+			for (j = 0; j < devLogList.size(); j++)
+			{
+				ProxyTrameS addDevFrame = new ProxyTrameS(timestamp, 'S', 'A', 
+						devLogList.get(j).getIdLogique(), devLogList.get(j).getTypeLogique());
+				System.out.println("type dev phy = " + devP.getTypePhysique()
+						+ "  type dev Log = "+ devLogList.get(j).getTypeLogique() + 
+						"  id dev Log = " + devLogList.get(j).getIdLogique());
+				synchronized (listeProxyTrames) {
+					// listeProxyTrames.wait();
+					listeProxyTrames.add(addDevFrame);
+					listeProxyTrames.notify();
+				}
+				
+			}
+		}
+		//System.out.println(listeProxyTrames.size());
+	}
+	
 	
 	public ClientEnvoiGHome(Socket socket) {
 		this.socket = socket;

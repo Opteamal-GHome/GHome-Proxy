@@ -1,6 +1,8 @@
 
 public class Constantes {
 
+	public final static String pathToDeviceFile = "D:/4IF/Ghome/src/capteurs.xml";
+	
 	public final static int TAILLE_TRAME_ENOCEAN = 28;
 	public final static String IP_BASE = "134.214.105.28";
 	public final static int PORT_BASE = 5000;
@@ -37,6 +39,7 @@ public class Constantes {
 	//public final static int TYPE_P_INTERRUPTEUR_4 = 123;
 	public final static String TYPE_P_INTERRUPTEUR_4 = "05-02-01";
 	public final static long ID_INTERRUPTEUR_4 = Long.parseLong("0021CC07", 16);
+	public final static String TYPE_P_PRISE = "prise";
 	public final static long ID_PRISE = Long.parseLong("00FF9F1E07", 16);
 	public final static String TYPE_P_PRESENCE = "07-08-01"; //light, temp & occupancy
 	public final static long ID_PRESENCE = Long.parseLong("000053E7B", 16);

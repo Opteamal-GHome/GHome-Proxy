@@ -1,4 +1,5 @@
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 
 /**
  * Classe abstraite ProxyTrame
@@ -39,7 +40,8 @@ public abstract class ProxyTrame implements Serializable
 	/**
 	 * Encode les attributs de la classe
 	 * @return
+	 * @throws UnsupportedEncodingException 
 	 */
-	public abstract byte[] encodeTrame();
+	public abstract byte[] encodeTrame() throws UnsupportedEncodingException;
 
 }

@@ -20,42 +20,33 @@ public class Main {
 		// (start) dans le main plutôt que dans les constructeurs
 
 		// Lancement du serveur (test)
-		// ServeurEnvoiGHome serv = new
-		// ServeurEnvoiGHome(Constantes.PORT_SERV_ENVOI);
+		// ServeurEnvoiGHome serv = new ServeurEnvoiGHome(Constantes.PORT_SERV_ENVOI);
 
+		Socket sock = new Socket (InetAddress.getByName(Constantes.IP_GHOME),Constantes.PORT_GHOME);
+		new ClientEnvoiGHome(sock);
+		new ClientLectureGHome(sock);
+		
 		// Lancement du thread de parsing des trames
-		// Parseur parseur = new Parseur();
-		//		
-		// contact.demarrerTimer();
-		// interrupteur.demarrerTimer();
+		 Parseur parseur = new Parseur();
+
+		// thread commande
+		 new Commande();
 
 		// Lancement du Thread d'envoi
-		 /*try {
+		/* try {
 		 ClientEnvoieBase clientBase = new ClientEnvoieBase(InetAddress.getByName(Constantes.IP_BASE),Constantes.PORT_BASE);
 		 } catch (UnknownHostException e) {
 		 // TODO Auto-generated catch block
 		 e.printStackTrace();
-		 }*/
-
-		// Creation d'un socket pour GHome
-		//Socket socket = new Socket(InetAddress.getByName(Constantes.IP_GHOME),Constantes.PORT_GHOME);
-
-		// Lancement des Threads GHome
-//		new Thread(new ClientEnvoiGHome(socket)).start();
-		//new Thread(new ClientLectureGHome(socket)).start();
-
-		// thread commande
-		//new Commande();
+		 }
 
 		// Lancement du thread de réception des trames de la base
-		// try {
-		// ClientLectureBase clientLect = new
-		// ClientLectureBase(InetAddress.getByName(Constantes.IP_BASE),
-		// Constantes.PORT_BASE);
-		// } catch (UnknownHostException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
+		 try {
+		 ClientLectureBase clientLect = new ClientLectureBase(InetAddress.getByName(Constantes.IP_BASE),Constantes.PORT_BASE);
+		 } catch (UnknownHostException e) {
+		 // TODO Auto-generated catch block
+		 e.printStackTrace();
+		 }*/
 
 		Meteo meteo = new Meteo();
 		System.out.println(meteo.getTemperature());
@@ -106,8 +97,6 @@ public class Main {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}*/
-
-		new ClientEnvoiGHome(InetAddress.getByName(Constantes.IP_GHOME),Constantes.PORT_GHOME);
 		
 	}
 

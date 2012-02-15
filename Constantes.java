@@ -9,8 +9,8 @@ public class Constantes {
 	//public final static String IP_GHOME = "134.214.58.131";
 	//public final static int PORT_GHOME = 80;
 	
-	public final static String IP_GHOME = "134.214.166.16";
-	public final static int PORT_GHOME = 421;
+	public final static String IP_GHOME = "134.214.220.180";
+	public final static int PORT_GHOME =80;
 	public final static int PORT_SERV_ENVOI = 421;
 	
 	// Type de trame (envoyée au serveur)

@@ -16,9 +16,6 @@ public class ClientEnvoiGHome  implements Runnable {
 	public ClientEnvoiGHome(InetAddress adresseIP, int port) {
 
 		System.out.println("ClientEnvoiGHome : dans le constructeur");
-		
-		// Création du Thread
-		clientEnvoiThread = new Thread(this);
 
 		// Création du socket
 		try {
@@ -27,7 +24,10 @@ public class ClientEnvoiGHome  implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		
+		// Création du Thread
+		clientEnvoiThread = new Thread(this);
+		
 		System.out.println("ClientEnvoiGHome : Thread et Socket créés");
 
 		// Création de la liste
@@ -77,15 +77,17 @@ public class ClientEnvoiGHome  implements Runnable {
 		this.socket = socket;
 		
 		// Lancement Thread
-		//this.clientEnvoiThread = new Thread(this);
+		this.clientEnvoiThread = new Thread(this);
 		
 		// Création de la liste
 		listeProxyTrames = new ArrayList<ProxyTrame>();
 
 		// Lancement du Thread
-		//clientEnvoiThread.start();
+		clientEnvoiThread.start();
 		
 		System.out.println("Constructeur Envoi GHome OK");
+		
+		this.init();
 	}
 
 	@Override

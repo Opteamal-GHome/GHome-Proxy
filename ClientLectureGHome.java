@@ -45,8 +45,8 @@ public class ClientLectureGHome implements Runnable {
 		this.socket = socket;
 
 		// Lancement Thread
-		//this.clientLectureGhThread = new Thread(this);
-		//this.clientLectureGhThread.start();
+		this.clientLectureGhThread = new Thread(this);
+		this.clientLectureGhThread.start();
 
 		System.out.println("Constructeur Client lecture GHome OK");
 	}

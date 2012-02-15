@@ -1,4 +1,5 @@
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 
 
 public class ProxyTrameS extends ProxyTrame implements Serializable 
@@ -40,10 +41,10 @@ public class ProxyTrameS extends ProxyTrame implements Serializable
 	}
 
 	@Override
-	public byte[] encodeTrame() {
-		byte[] typeM = ("" + typeMessage).getBytes();
+	public byte[] encodeTrame() throws UnsupportedEncodingException {
+		byte[] typeM = ("" + typeMessage).getBytes("UTF-8");
 		byte[] deviceI = Utilitaires.intToByteArray(deviceId);
-		byte[] typeD = Utilitaires.intToByteArray(typeDevice);
+		byte[] typeD = ("" + typeDevice).getBytes("UTF-8");
 		
 		// Concatenation
 		byte[] tab1 = Utilitaires.concat(typeM, deviceI);

@@ -127,7 +127,7 @@ public class EnsembleDevices {
 			DeviceLogique interrupteurLogique = new DeviceLogique(EnsembleDevices.getNextIdLogique(), Constantes.TYPE_L_INTERRUPTEUR,interrupteur);
 			listeDevLogInt.add(interrupteurLogique);
 			interrupteur.setListeDevicesLogiques(listeDevLogInt);
-			EnsembleDevices.ajouterDevice(Constantes.ID_INTERRUPTEUR_4,interrupteur);
+			EnsembleDevices.ajouterDevice(id,interrupteur);
 			
 			System.out.println("adding a Rocker Switch device");
 		}

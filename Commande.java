@@ -20,9 +20,8 @@ public class Commande implements Runnable {
 		}
 	}
 
-	public List<String> createCommands(ByteBuffer buffer) {
-		// ByteBuffer bb = ByteBuffer.allocate(18);
-		// continet toute l'information en bytes
+	public List<String> createCommands(ByteBuffer buffer) 
+	{
 		
 		for (int i=0; i < buffer.capacity(); i++) {
 			System.out.print(buffer.get(i));
@@ -60,17 +59,19 @@ public class Commande implements Runnable {
 
 		if (typeOfMess.equals("O")) // frame of type Order
 		{
-			if (devPhy.getIdPhysique() == Constantes.ID_PRISE) {
-				commands = createFrameForContact(data);
-				System.out.println("Commande : " + commands.get(0).toString());
-			}
+//			if (devPhy.getIdPhysique() == Constantes.ID_PRISE) {
+//				commands = createFrameForContact(data);
+//				System.out.println("Commande : " + commands.get(0).toString());
+//			}
+
+			commands = createFrameForContact(data, devPhy.getIdPhysique());
 
 		}
 		return commands;
 	}
 	
 
-	public static List<String> createFrameForContact(int data) {
+	public static List<String> createFrameForContact(int data, long id) {
 		List<String> commands = new ArrayList<String>();
 		// create a TX-Telegram received from a Rocker Switch (RPS)
 		
@@ -78,6 +79,7 @@ public class Commande implements Runnable {
 
 		if (data == 1) // open Contact; Button B1 pushed
 		{
+			System.out.println("******************open contact****************");
 			telegram += "50";
 		} else // Button B0 pushed; close contact
 		{
@@ -85,7 +87,9 @@ public class Commande implements Runnable {
 		}
 		telegram += "000000";
 		// l'id de notre prise
-		telegram += "FF9F1E07";
+//		telegram += "FF9F1E05";
+		String idString = Long.toHexString(id);
+		telegram += idString;
 		// status
 		telegram += "30";
 		// checksum
@@ -114,7 +118,8 @@ public class Commande implements Runnable {
 					if (commandes != null && commandes.size() > 0) {
 						System.out.println("Rentree dans la boucle magique !");
 						for (int i = 0; i < commandes.size(); i++) {
-							ClientEnvoieBase.addToList(commandes.get(i));
+							System.out.println("------------------send command to data base---------------");
+							ClientEnvoiBase.addToList(commandes.get(i));
 						}
 					}
 				}

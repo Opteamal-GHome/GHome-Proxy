@@ -2,8 +2,6 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
 
 import meteo.Meteo;
 
@@ -22,9 +20,9 @@ public class Main {
 		// Lancement du serveur (test)
 		// ServeurEnvoiGHome serv = new ServeurEnvoiGHome(Constantes.PORT_SERV_ENVOI);
 
-		Socket sock = new Socket (InetAddress.getByName(Constantes.IP_GHOME),Constantes.PORT_GHOME);
-		new ClientEnvoiGHome(sock);
-		new ClientLectureGHome(sock);
+		Socket gHomeSocket = new Socket (InetAddress.getByName(Constantes.IP_GHOME),Constantes.PORT_GHOME);
+		new ClientEnvoiGHome(gHomeSocket);
+		new ClientLectureGHome(gHomeSocket);
 		
 		// Lancement du thread de parsing des trames
 		 Parseur parseur = new Parseur();
@@ -32,21 +30,13 @@ public class Main {
 		// thread commande
 		 new Commande();
 
-		// Lancement du Thread d'envoi
-		/* try {
-		 ClientEnvoieBase clientBase = new ClientEnvoieBase(InetAddress.getByName(Constantes.IP_BASE),Constantes.PORT_BASE);
-		 } catch (UnknownHostException e) {
-		 // TODO Auto-generated catch block
-		 e.printStackTrace();
-		 }
+		Socket baseSocket = new Socket (InetAddress.getByName(Constantes.IP_BASE),Constantes.PORT_BASE); 
+		// Lancement du thread d'envoi des trames de la base
+		 ClientEnvoiBase clientBase = new ClientEnvoiBase(baseSocket);
 
 		// Lancement du thread de réception des trames de la base
-		 try {
-		 ClientLectureBase clientLect = new ClientLectureBase(InetAddress.getByName(Constantes.IP_BASE),Constantes.PORT_BASE);
-		 } catch (UnknownHostException e) {
-		 // TODO Auto-generated catch block
-		 e.printStackTrace();
-		 }*/
+		 ClientLectureBase clientLect = new ClientLectureBase(baseSocket);
+		
 
 		Meteo meteo = new Meteo();
 		System.out.println(meteo.getTemperature());
@@ -87,17 +77,8 @@ public class Main {
 		// contact.redemarrerTimer();
 
 		// send command telegram to device
-		// ClientEnvoieBase.addToList("A55A6B0570000000FF9F1E073000");
-		//ClientEnvoieBase.addToList("A55A6B0550000000FF9F1E073000"); // turns on
-																	// the
-																	// contact
-		/*try {
-			new ClientEnvoieBase(InetAddress.getByName(Constantes.IP_BASE), Constantes.PORT_BASE);
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-		
+		// ClientEnvoiBase.addToList("A55A6B0570000000FF9F1E073000");
+		//ClientEnvoiBase.addToList("A55A6B0550000000FF9F1E073000"); // turns on the contact
 	}
 
 }

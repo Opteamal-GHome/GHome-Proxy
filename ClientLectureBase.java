@@ -12,21 +12,15 @@ public class ClientLectureBase implements Runnable {
 	public boolean continuer = true;
 	public char[] cbuf = new char[Constantes.TAILLE_TRAME_ENOCEAN];
 
-	public ClientLectureBase(InetAddress adresseIP, int port) {
+	public ClientLectureBase(Socket baseSocket) 
+	{
 		
 		System.out.println("ClientLectureBase : dans le constructeur");
 		
 		// Création du Thread
 		clientLectureThread = new Thread(this);
 		
-		// Création du socket
-		try {
-			_socket = new Socket(adresseIP, port);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		this._socket = baseSocket;
 		System.out.println("ClientLectureBase : Thread et Socket créés");
 		
 		// Lancement du Thread

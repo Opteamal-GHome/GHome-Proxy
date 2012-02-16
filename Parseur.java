@@ -42,10 +42,10 @@ public class Parseur implements Runnable {
 		List<ProxyTrame> listeProxyTrames = new ArrayList<ProxyTrame>();
 		long timestamp = System.currentTimeMillis();
 
-		// teach-in frame and unknown device
-		if (EnsembleDevices.getDevicePhysiqueByID(id) == null && (((dataByte0_1 & 8) == 0) && ((dataByte0_2 & 8) == 1))) 
+		// teach-in frame and unknown device dataByte0.bit3 = 0; dataByte0.bit7 = 1
+		if (EnsembleDevices.getDevicePhysiqueByID(id) == null && (((dataByte0_1 & 8) == 1) && ((dataByte0_2 & 8) == 0)))
 		{
-			System.out.println("Parseur : in the TeachIn if");
+			System.out.println("---------Parseur : trame TEACH IN reconnue---------");
 			//parse teach in for 4BS
 			int org = Integer.parseInt(""+trame[Constantes.ORG_1]+trame[Constantes.ORG_2], 16); //has to be 7
 			int[] funcType = parseFuncAndType(trame);
@@ -90,13 +90,15 @@ public class Parseur implements Runnable {
 		int type = Integer.parseInt(typeString, 2);
 		funcType[0] = func;
 		funcType[1] = type;
+		System.out.println("---------In parse FUNC&TYPE; func = "+funcType[0]+" type = "+funcType[1]+"-------");
+		
 		return funcType;
 
 	}
 
 	public static List<ProxyTrame> parseTeachIn (long id, int org, int func, int type, long timestamp)
 	{
-		System.out.println("Parseur : dans parseTeachIn");
+		System.out.println("Parseur : dans PARSE-TEACH-IN");
 		List<ProxyTrame> listeTramesS = new ArrayList<ProxyTrame>();
 
 		switch (func)
@@ -115,7 +117,6 @@ public class Parseur implements Runnable {
 			{
 			case 5: 
 				listeTramesS = TeachInTemp40(id, timestamp);
-
 			}
 		}
 
@@ -125,7 +126,7 @@ public class Parseur implements Runnable {
 
 	public static List<ProxyTrame> TeachInTemp40 (long id, long timestamp)
 	{
-		System.out.println("Parseur : dans TeachInTemp40");
+		System.out.println("########### Parseur : dans TeachInTemp40 ############ id = "+id);
 		List<ProxyTrame> listeTramesS = new ArrayList<ProxyTrame>();
 		List<DeviceLogique> listeDevLog = new ArrayList<DeviceLogique>();
 		DevicePhysique devPhysique = new DevicePhysique(id, "07-02-05", listeDevLog);
@@ -143,7 +144,7 @@ public class Parseur implements Runnable {
 
 	public static List<ProxyTrame> TeachInLTO (long id, long timestamp)
 	{
-		System.out.println("Parseur : dans TeachInLTO");
+		System.out.println("@@@@@@@@@@@@@@ Parseur : dans TeachInLTO @@@@@@@@@@@@@ id= " + id);
 		List<ProxyTrame> listeTramesS = new ArrayList<ProxyTrame>();
 		List<DeviceLogique> listeDevLog = new ArrayList<DeviceLogique>();
 		DevicePhysique devPhysique = new DevicePhysique(id, "07-08-01", listeDevLog);
@@ -198,20 +199,34 @@ public class Parseur implements Runnable {
 		}
 		else if(typePhysique == "07-08-01") //Light, Temp and Occupancy
 		{
-			listeProxyTrames = parseTypeLTO (trame, devPhysique, timestamp);
+			listeProxyTrames = parseTypeLTO(trame, devPhysique, timestamp);
 		}
 
 		else if(typePhysique == "07-02-05") //Temperature sensor
 		{
-			//todo parsing for temperature sensor
+			listeProxyTrames = parseTypeTemperature(trame, devPhysique, timestamp);
 		}
 
 		return listeProxyTrames;
 	}
 
+	//1 capteur logique correspondant 
+	public static List<ProxyTrame> parseTypeTemperature (char[] trame, DevicePhysique devPhysique, long timestamp)
+	{
+		System.out.println("Parseur : dans parseTypeTemperature");
 
+		List<ProxyTrame> listeTrames = new ArrayList<ProxyTrame>();
+		DeviceLogique devLog = devPhysique.getListeDevicesLogiques().get(0);
+		ProxyTrameD proxyTrameD = new ProxyTrameD(timestamp, Constantes.TYPE_DONNEES, devLog.getIdLogique()); 
+		
+		int temperatureTh = Integer.parseInt(""+trame[Constantes.DATA_BYTE_1_1]+trame[Constantes.DATA_BYTE_1_2], 16);
+		int temperatureReelle = temperatureTh*40/255;
+		proxyTrameD.setValeurLue(temperatureReelle);
+		listeTrames.add(proxyTrameD);
+		return listeTrames;
+	}
+	
 	//1 Interrupteur physique = 1 capteur logique
-
 	public static List<ProxyTrame> parseTypeInterrupteur (char[] trame, DevicePhysique devPhysique, long timestamp)
 	{
 		System.out.println("Parseur : dans parseTypeInterrupteur");

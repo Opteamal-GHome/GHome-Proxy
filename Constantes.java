@@ -42,6 +42,7 @@ public class Constantes {
 	//public final static long ID_PRESENCE = Long.parseLong("000053E7B", 16);
 	public final static String TYPE_P_CONTACT = "06-00-01";
 	//public final static long ID_CONTACT = Long.parseLong("0001B292", 16);
+	public final static String TYPE_P_TEMPERATURE = "07-02-05";
 	
 	
 	// Correspondance Index dans le tableau de caractères / byte EnOcean

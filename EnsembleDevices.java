@@ -1,7 +1,10 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
@@ -24,6 +27,8 @@ public class EnsembleDevices {
 			mapDevicesLogiques.put(dl.getIdLogique(), dl);
 		}
 		
+		ajouterDeviceDansFichierXml(nouveauDevicePhysique);
+		
 		// Démarrer le timer du device
 		nouveauDevicePhysique.demarrerTimer();
 	}
@@ -31,7 +36,7 @@ public class EnsembleDevices {
 	public static void supprimerDevice(int idLogique)
 	{
 		DeviceLogique dl = mapDevicesLogiques.get(idLogique);
-		mapDevicesLogiques.remove(idLogique);
+//		mapDevicesLogiques.remove(idLogique);
 		
 		DevicePhysique dp = dl.getDevicePhysique();
 		List<DeviceLogique> vDL= dp.getListeDevicesLogiques();
@@ -40,7 +45,9 @@ public class EnsembleDevices {
 		{
 			mapDevicesLogiques.remove(vDL.get(i).getIdLogique());
 		}
+		dp.arreterTimer();
 		mapDevicesPhysiques.remove(dp.getIdPhysique());	
+		supprimerDeviceDuFichierXml(dp.getIdPhysique());
 	}
 	
 	public static DevicePhysique getDevicePhysiqueByID(long idPhysique) {
@@ -64,7 +71,8 @@ public class EnsembleDevices {
 	{
 		String tag = "Dev";
 		Element el = null;
-		Element root = Utilitaires.loadConfiguration(path);
+		Document document = Utilitaires.loadConfiguration(path);
+		Element root = document.getDocumentElement();
 		if(root.getNodeName().equals("Devices"))
 		{
 			NodeList listOfDev = root.getElementsByTagName(tag);
@@ -97,7 +105,7 @@ public class EnsembleDevices {
 		}
 		else if (type.equals("")) //temperature
 		{
-			//TODO finish this -> no need to because dynamically added
+			//TODO finish this 
 			//System.out.println("adding a temperature device");
 		}
 		else if (type.equals("07-08-01")) //light, temperature and presence
@@ -143,5 +151,45 @@ public class EnsembleDevices {
 			
 			System.out.println("adding a contact (prise) device");
 		}
+	}
+	
+	public static void ajouterDeviceDansFichierXml(DevicePhysique capteurPhysique) {
+		Document doc = Utilitaires.loadConfiguration(Constantes.pathToDeviceFile);
+		Element root = doc.getDocumentElement();
+		
+		// On vérifie qu'il n'y est pas déjà
+		if(doc.getElementById(Long.toString(capteurPhysique.getIdPhysique())) == null) {
+			return;
+		}
+		
+		// Ajout du device au document XML
+		Element device = doc.createElement("Dev");
+		device.setAttribute("eep", capteurPhysique.getTypePhysique());
+		device.setIdAttribute("id", true);
+		device.setAttribute("id", Long.toString(capteurPhysique.getIdPhysique()));
+		root.appendChild(device);
+		
+		Utilitaires.transformerXml(doc, Constantes.pathToDeviceFile);
+	}
+	
+	public static void supprimerDeviceDuFichierXml(long id) {
+		System.out.println("Dans supprimerDuFichierXml");
+		Document doc = Utilitaires.loadConfiguration(Constantes.pathToDeviceFile);
+		Element root = doc.getDocumentElement();
+		System.out.println("EnsembleDevices id : " + Long.toString(id));
+		Element e = doc.getElementById(Long.toString(id));
+		System.out.println("EnsembleDevices e is null ? " + (e==null));
+		
+		NodeList list = root.getElementsByTagName("Dev");
+		if(list.getLength() > 0) {
+			for(int i=0; i<list.getLength(); i++) {
+				Element ep = (Element) list.item(i);
+				System.out.println("Element id = " + ep.getAttribute("id"));
+			}
+		}
+		
+//		root.removeChild(e);
+
+//		Utilitaires.transformerXml(doc, Constantes.pathToDeviceFile);
 	}
 }

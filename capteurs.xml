@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE Devices SYSTEM "capteurs.dtd">
 <Devices>
-	
 	<Dev id = "4288617991" eep = "prise" type = "prise"/>
 	<Dev id = "2214919" eep = "05-02-01" type = "interrupteur"/>
-	
-	
-
 </Devices>

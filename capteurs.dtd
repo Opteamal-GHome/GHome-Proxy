@@ -1,0 +1,6 @@
+<!ELEMENT Devices (Dev)*>
+<!ELEMENT Dev (#PCDATA)>
+<!ATTLIST Dev
+   id	ID	#REQUIRED
+   eep	CDATA	#REQUIRED
+>

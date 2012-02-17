@@ -6,6 +6,13 @@ import javax.swing.JFileChooser;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -57,7 +64,7 @@ public class Utilitaires {
         return buff.toString(); 
     }
 
-    public static Element loadConfiguration(String path) 
+    public static Document loadConfiguration(String path) 
     {
     	
         // create a document factory
@@ -81,11 +88,30 @@ public class Utilitaires {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-			  return document.getDocumentElement();
+			  return document;
       
     }
 	
-	
-	
-	
+
+    public static void transformerXml(Document document, String fichier) {
+    	try {
+    		// Création de la source DOM
+    		Source source = new DOMSource(document);
+    		
+    		// Création du fichier de sortie
+    		File file = new File(fichier);
+    		Result resultat = new StreamResult(fichier);
+    		
+    		// Configuration du transformer
+    		TransformerFactory fabrique = TransformerFactory.newInstance();
+    		Transformer transformer = fabrique.newTransformer();
+    		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+    		transformer.setOutputProperty(OutputKeys.ENCODING, "utf8");
+    		
+    		// Transformation
+    		transformer.transform(source, resultat);
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}
+    }	
 }

@@ -29,6 +29,7 @@ public class TimerListener implements ActionListener {
 			// Ajout des trames à envoyer
 			ClientEnvoiGHome.addProxyTrame(proxyTrameS);
 	}
+		EnsembleDevices.supprimerDevice(this.devPhy.getListeDevicesLogiques().get(0).getIdLogique());
 }
 
 }

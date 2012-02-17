@@ -44,4 +44,8 @@ public class DevicePhysique {
 		System.out.println("On redémarre le timer");
 		this.timerDevice.restart();
 	}
+	
+	public void arreterTimer() {
+		this.timerDevice.stop();
+	}
 }

@@ -18,7 +18,7 @@ public class Main {
 		// (start) dans le main plutôt que dans les constructeurs
 
 		// Lancement du serveur (test)
-		// ServeurEnvoiGHome serv = new ServeurEnvoiGHome(Constantes.PORT_SERV_ENVOI);
+		 //sServeurEnvoiGHome serv = new ServeurEnvoiGHome(Constantes.PORT_SERV_ENVOI);
 
 		Socket gHomeSocket = new Socket (InetAddress.getByName(Constantes.IP_GHOME),Constantes.PORT_GHOME);
 		new ClientEnvoiGHome(gHomeSocket);

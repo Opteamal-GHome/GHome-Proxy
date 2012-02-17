@@ -56,7 +56,7 @@ public class ClientEnvoiGHome  implements Runnable {
 			int j;
 			for (j = 0; j < devLogList.size(); j++)
 			{
-				ProxyTrameS addDevFrame = new ProxyTrameS(timestamp, 'S', 'A', 
+				ProxyTrameS addDevFrame = new ProxyTrameS(timestamp, Constantes.TYPE_STATUS, Constantes.TYPE_AJOUT, 
 						devLogList.get(j).getIdLogique(), devLogList.get(j).getTypeLogique());
 				System.out.println("type dev phy = " + devP.getTypePhysique()
 						+ "  type dev Log = "+ devLogList.get(j).getTypeLogique() + 
@@ -99,7 +99,7 @@ public class ClientEnvoiGHome  implements Runnable {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			System.out.println("ClientEnvoiGHome : dans le while");
+			//System.out.println("ClientEnvoiGHome : dans le while");
 			ProxyTrame proxyTrame;
 			synchronized (listeProxyTrames) {
 				if (listeProxyTrames.isEmpty()) {
@@ -125,7 +125,7 @@ public class ClientEnvoiGHome  implements Runnable {
 	}
 
 	public static void addProxyTrame(ProxyTrame proxyTrame) {
-		System.out.println("ClientEnvoiGHome : dans addProxyTrame");
+		//System.out.println("ClientEnvoiGHome : dans addProxyTrame");
 		synchronized (listeProxyTrames) {
 			// listeProxyTrames.wait();
 			listeProxyTrames.add(proxyTrame);

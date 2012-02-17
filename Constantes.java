@@ -1,35 +1,35 @@
 
 public class Constantes {
 
-	public final static String pathToDeviceFile = "/home/caucagne1/workspace/PLDreseaux6/Ghome/src/capteurs.xml";
+	public final static String pathToDeviceFile = "/home/aibuzatu/Desktop/Ghome/src/capteurs.xml";
 	
 	public final static int TAILLE_TRAME_ENOCEAN = 28;
 	public final static String IP_BASE = "134.214.105.28";
 	public final static int PORT_BASE = 5000;
 	
-	public final static String IP_GHOME = "134.214.220.180";
-	public final static int PORT_GHOME =80;
+	public final static String IP_GHOME = "134.214.59.110";
+	public final static int PORT_GHOME = 443;
 	public final static int PORT_SERV_ENVOI = 421;
 	
-	// Type de trame (envoyée au serveur)
+	// Type de trame (envoyï¿½e au serveur)
 	public final static char TYPE_STATUS = 'S';
 	public final static char TYPE_DONNEES = 'D';
 	
-	// Type de trame (envoyée par serveur)
+	// Type de trame (envoyï¿½e par serveur)
 	public final static char TYPE_LANCEMENT = 'L';
 	public final static char TYPE_FIN = 'F';
 	public final static char TYPE_ORDRE = 'O';
 	
 	// Type de trame status
 	public final static char TYPE_AJOUT = 'A';
-	public final static char TYPE_RETRAIT = 'R'; // Capteur plus détecté
+	public final static char TYPE_RETRAIT = 'R'; // Capteur plus dï¿½tectï¿½
 	
 	// Type capteur
 	public final static char TYPE_L_LUMINOSITE = 'L';
 	public final static char TYPE_L_TEMPERATURE = 'T';
 	public final static char TYPE_L_HUMIDITE = 'H';
 	public final static char TYPE_L_PRESENCE = 'P';
-	public final static char TYPE_L_CONTACT = 'C'; // Contact fenêtre ou porte fermée
+	public final static char TYPE_L_CONTACT = 'C'; // Contact fenï¿½tre ou porte fermï¿½e
 	public final static char TYPE_L_INTERRUPTEUR = 'I';
 	public final static char TYPE_L_ACTIONNEUR = 'E';
 	
@@ -45,7 +45,7 @@ public class Constantes {
 	public final static String TYPE_P_TEMPERATURE = "07-02-05";
 	
 	
-	// Correspondance Index dans le tableau de caractères / byte EnOcean
+	// Correspondance Index dans le tableau de caractï¿½res / byte EnOcean
 	public final static int INDEX_SYNC_BYTE_1_1 = 0;
 	public final static int INDEX_SYNC_BYTE_1_2 = 1;
 	public final static int INDEX_SYNC_BYTE_2_1 = 2;
@@ -75,7 +75,7 @@ public class Constantes {
 	public final static int CHECKSUM_1 = 26;
 	public final static int CHECKSUM_2 = 27;
 
-	// Temps au bout duquel l'alerte enlèvement est déclenchée
+	// Temps au bout duquel l'alerte enlï¿½vement est dï¿½clenchï¿½e
 	public final static int DELAI_DECLENCHEMENT_TIMER = 900000;
 	//public final static int DELAI_DECLENCHEMENT_TIMER = 10000;
 }

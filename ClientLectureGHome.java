@@ -99,7 +99,7 @@ public class ClientLectureGHome implements Runnable {
 					}
 
 				} else {
-					System.out.println("dedans !!!");
+					//System.out.println("ClientLectureGHome : message from GHome empty");
 				}
 				
 			} catch (Exception e1) {

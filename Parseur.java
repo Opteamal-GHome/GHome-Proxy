@@ -3,7 +3,7 @@ import java.util.List;
 
 /**
  * 
- * Thread récupérant les tâches reçues, les parsant, puis les envoyant au serveur GHome
+ * Thread rï¿½cupï¿½rant les tï¿½ches reï¿½ues, les parsant, puis les envoyant au serveur GHome
  *
  */
 public class Parseur implements Runnable {
@@ -36,30 +36,45 @@ public class Parseur implements Runnable {
 
 		int dataByte0_1 = Integer.parseInt((""+trame[Constantes.DATA_BYTE_0_1]), 16);
 		int dataByte0_2 = Integer.parseInt((""+trame[Constantes.DATA_BYTE_0_2]), 16);
+		long dataByte3 = Long.parseLong(""+trame[Constantes.DATA_BYTE_3_1]+trame[Constantes.DATA_BYTE_3_2],16);
+		System.out.println("data byte 0_1 = " +dataByte0_1 +" data byte 0_2 "+dataByte0_2);
 
 		long id = parseID(trame);
 
 		List<ProxyTrame> listeProxyTrames = new ArrayList<ProxyTrame>();
 		long timestamp = System.currentTimeMillis();
-
+		
+		boolean teachIn = false;
+		teachIn = ( ((dataByte0_1 & 8) == 8) && ((dataByte0_2 & 8) == 0) );
+		
 		// teach-in frame and unknown device dataByte0.bit3 = 0; dataByte0.bit7 = 1
-		if (EnsembleDevices.getDevicePhysiqueByID(id) == null && (((dataByte0_1 & 8) == 1) && ((dataByte0_2 & 8) == 0)))
+		if (EnsembleDevices.getDevicePhysiqueByID(id) == null && teachIn)
 		{
 			System.out.println("---------Parseur : trame TEACH IN reconnue---------");
 			//parse teach in for 4BS
 			int org = Integer.parseInt(""+trame[Constantes.ORG_1]+trame[Constantes.ORG_2], 16); //has to be 7
 			int[] funcType = parseFuncAndType(trame);
-
 			listeProxyTrames = parseTeachIn(id, org, funcType[0], funcType[1], timestamp);
+			
+		}
+		//the learn button of the contact sensor sends the sensor ID but the frame is not of TeachIn type 
+		else if (EnsembleDevices.getDevicePhysiqueByID(id) == null && dataByte3 == 0 && !teachIn)
+		{
+			int org = Integer.parseInt(""+trame[Constantes.ORG_1]+trame[Constantes.ORG_2], 16);
+			
+			if(org == 6){ 
+				System.out.println("---------Parseur : trame LRN CONTACT reconnue--------- org = "+org);	
+				listeProxyTrames = addContactType(id, timestamp);
+			}
 		}
 		else if(EnsembleDevices.getDevicePhysiqueByID(id) == null)
 		{
 			//parse frame of type 'S' for devices without teachin
 			System.out.println("capteur inconnu !");
 		}
-		else // Trame de données
+		else if(!teachIn)// Trame de donnï¿½es
 		{
-			// remettre le watchdog à 0 (car on a bien reçu une trame de ce capteur)
+			// remettre le watchdog ï¿½ 0 (car on a bien reï¿½u une trame de ce capteur)
 			System.out.println("Parseur : dans parseTrameData");
 			EnsembleDevices.getDevicePhysiqueByID(id).redemarrerTimer();
 			listeProxyTrames = parseTrameD(id, trame, timestamp);
@@ -67,6 +82,26 @@ public class Parseur implements Runnable {
 		return listeProxyTrames;
 	}
 
+	public static List<ProxyTrame> addContactType(long id, long timestamp)
+	{
+		System.out.println("==================Parseur : Dans addContactType + id = " +id+" ==========");
+		
+		List<ProxyTrame> listeTramesS = new ArrayList<ProxyTrame>();
+		List<DeviceLogique> listeDevLog = new ArrayList<DeviceLogique>();
+		DevicePhysique devPhysique = new DevicePhysique(id, Constantes.TYPE_P_CONTACT, listeDevLog);
+		
+		DeviceLogique contactDevice = new DeviceLogique(EnsembleDevices.getNextIdLogique(), Constantes.TYPE_L_CONTACT, devPhysique);
+		listeDevLog.add(contactDevice);
+
+		EnsembleDevices.ajouterDevice(id, devPhysique);
+
+		ProxyTrameS proxyTrame = new ProxyTrameS(timestamp, Constantes.TYPE_STATUS, Constantes.TYPE_AJOUT, contactDevice.getIdLogique(), Constantes.TYPE_L_CONTACT);
+		listeTramesS.add(proxyTrame);
+
+		return listeTramesS;
+		
+	}
+	
 	public static int[] parseFuncAndType(char[] trame)
 	{
 		int funcType[] = new int[2];
@@ -118,25 +153,31 @@ public class Parseur implements Runnable {
 			case 5: 
 				listeTramesS = TeachInTemp40(id, timestamp);
 			}
+			
+//		case 0:
+//			//eep 06-00-01 -> contact sensor
+//		{
+//			listeTramesS = TeachInContact(id, timestamp);
+//		}
+		
 		}
 
 		return listeTramesS;
 	}
-
 
 	public static List<ProxyTrame> TeachInTemp40 (long id, long timestamp)
 	{
 		System.out.println("########### Parseur : dans TeachInTemp40 ############ id = "+id);
 		List<ProxyTrame> listeTramesS = new ArrayList<ProxyTrame>();
 		List<DeviceLogique> listeDevLog = new ArrayList<DeviceLogique>();
-		DevicePhysique devPhysique = new DevicePhysique(id, "07-02-05", listeDevLog);
-		DeviceLogique tempDevice = new DeviceLogique(EnsembleDevices.getNextIdLogique(), 'T', devPhysique);
+		DevicePhysique devPhysique = new DevicePhysique(id, Constantes.TYPE_P_TEMPERATURE, listeDevLog);
+		DeviceLogique tempDevice = new DeviceLogique(EnsembleDevices.getNextIdLogique(), Constantes.TYPE_L_TEMPERATURE, devPhysique);
 		listeDevLog.add(tempDevice);
 
 		EnsembleDevices.ajouterDevice(id, devPhysique);
 
-		ProxyTrameS proxyTrame1 = new ProxyTrameS(timestamp, 'S', 'A', tempDevice.getIdLogique(), 'T');
-		listeTramesS.add(proxyTrame1);
+		ProxyTrameS proxyTrame = new ProxyTrameS(timestamp, Constantes.TYPE_STATUS, Constantes.TYPE_AJOUT, tempDevice.getIdLogique(), Constantes.TYPE_L_TEMPERATURE);
+		listeTramesS.add(proxyTrame);
 
 		return listeTramesS;
 	}
@@ -158,6 +199,7 @@ public class Parseur implements Runnable {
 		listeDevLog.add(tempDevice);
 		listeDevLog.add(presDevice);
 		EnsembleDevices.ajouterDevice(id, devPhysique);
+		System.out.println("device added");
 
 		ProxyTrameS proxyTrame1 = new ProxyTrameS(timestamp, Constantes.TYPE_STATUS, Constantes.TYPE_AJOUT, lightDevice.getIdLogique(), Constantes.TYPE_L_LUMINOSITE);
 		listeTramesS.add(proxyTrame1);
@@ -297,7 +339,7 @@ public class Parseur implements Runnable {
 			if((dataByte3_2 & 1) == 1) //there's a second action
 			{
 
-				ProxyTrameD proxyTrameD2 = new ProxyTrameD(timestamp, 'D', devLog.getIdLogique());
+				ProxyTrameD proxyTrameD2 = new ProxyTrameD(timestamp, Constantes.TYPE_DONNEES, devLog.getIdLogique());
 
 				if (dataByte3_2 == 0 || dataByte3_2 == 1) //channel A1
 				{
@@ -359,7 +401,7 @@ public class Parseur implements Runnable {
 		DeviceLogique devLog = devPhysique.getListeDevicesLogiques().get(0);
 		ProxyTrameD proxyTrameD = new ProxyTrameD(timestamp, Constantes.TYPE_DONNEES, devLog.getIdLogique());
 		int val = dataByte0_2 & 1;
-		System.out.println("état du contact "+ val);
+		System.out.println("Etat du contact "+ val);
 		System.out.println("**************************dataByte3_2 "+dataByte0_2+"byte 3-2 = "+ trame[Constantes.DATA_BYTE_3_2]);
 		proxyTrameD.setValeurLue(dataByte0_2 & 1);
 
@@ -395,7 +437,10 @@ public class Parseur implements Runnable {
 
 		int luminosite = luminositeTh*510/255;
 		int temperature = temperatureTh*51/255;
-
+		
+		System.out.println("&&&&&&&&&&&&& Parseur : dans parseTypeLTO luminositÃ© = "+luminosite);
+		System.out.println("&&&&&&&&&&&&&&Parseur : dans parseTypeLTO TEMPERATURE = "+temperature);
+		
 		ProxyTrameD proxyTrameD1 = new ProxyTrameD(timestamp, Constantes.TYPE_DONNEES, devPhysique.getListeDevicesLogiques().get(0).getIdLogique());
 		proxyTrameD1.setValeurLue(luminosite);
 		listeTrames.add(proxyTrameD1);
@@ -443,7 +488,7 @@ public class Parseur implements Runnable {
 			if((listeProxyTrames != null) && (listeProxyTrames.size() != 0)){
 				System.out.println("adding frame to clientEnvoiGHome");
 				for(int i=0; i<listeProxyTrames.size(); i++) {
-					// Mettre la trame dans la liste des trames à envoyer
+					// Mettre la trame dans la liste des trames ï¿½ envoyer
 					ClientEnvoiGHome.addProxyTrame(listeProxyTrames.get(i));
 				}
 			}

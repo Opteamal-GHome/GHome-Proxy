@@ -97,7 +97,7 @@ public class EnsembleDevices {
 		}
 		else if (type.equals("")) //temperature
 		{
-			//TODO finish this 
+			//TODO finish this -> no need to because dynamically added
 			//System.out.println("adding a temperature device");
 		}
 		else if (type.equals("07-08-01")) //light, temperature and presence

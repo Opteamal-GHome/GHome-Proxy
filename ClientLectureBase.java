@@ -49,7 +49,7 @@ public class ClientLectureBase implements Runnable {
 			try {
 				int msg = response.read(cbuf, 0, Constantes.TAILLE_TRAME_ENOCEAN);
 				if (msg > 0) {
-					System.out.print("ClientLectureBase : trame reçue : ");
+					//System.out.print("ClientLectureBase : trame reçue : ");
 					for(int i=0; i<cbuf.length; i++)
 					{
 						System.out.print(cbuf[i]);

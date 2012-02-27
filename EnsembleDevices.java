@@ -158,7 +158,7 @@ public class EnsembleDevices {
 		Element root = doc.getDocumentElement();
 		
 		// On vérifie qu'il n'y est pas déjà
-		if(doc.getElementById(Long.toString(capteurPhysique.getIdPhysique())) == null) {
+		if(doc.getElementById(Long.toString(capteurPhysique.getIdPhysique())) != null) {
 			return;
 		}
 		

@@ -1,51 +1,55 @@
-
 public class Constantes {
 
-	public final static String pathToDeviceFile = "/home/aibuzatu/Desktop/Ghome/src/capteurs.xml";
-	
+	// Adresses du fichier xml et de la dtd
+	public final static String pathToDeviceFile = "/home/caucagne1/workspace/PLDreseaux10/GHomeProxy/src/capteurs.xml";
+	public final static String dtdFile = "capteurs.dtd";
+
 	public final static int TAILLE_TRAME_ENOCEAN = 28;
+	
+	// Adresse de la base des capteurs
 	public final static String IP_BASE = "134.214.105.28";
 	public final static int PORT_BASE = 5000;
-	
-	public final static String IP_GHOME = "134.214.59.110";
+
+	// Adresse du serveur GHome
+	public final static String IP_GHOME = "134.214.59.214";
 	public final static int PORT_GHOME = 443;
-	public final static int PORT_SERV_ENVOI = 421;
-	
-	// Type de trame (envoy�e au serveur)
+	// Pour le serveur simulé
+	public final static int PORT_SERV_ENVOI = 8000;
+
+	// Type de trame (envoyée au serveur)
 	public final static char TYPE_STATUS = 'S';
 	public final static char TYPE_DONNEES = 'D';
-	
-	// Type de trame (envoy�e par serveur)
+
+	// Type de trame (envoyée par serveur)
 	public final static char TYPE_LANCEMENT = 'L';
 	public final static char TYPE_FIN = 'F';
 	public final static char TYPE_ORDRE = 'O';
-	
+	public final static char TYPE_UPDATE_VILLE = 'V';
+
 	// Type de trame status
 	public final static char TYPE_AJOUT = 'A';
-	public final static char TYPE_RETRAIT = 'R'; // Capteur plus d�tect�
-	
-	// Type capteur
+	public final static char TYPE_RETRAIT = 'R'; // Capteur plus détecté
+
+	// Type capteur logique
 	public final static char TYPE_L_LUMINOSITE = 'L';
 	public final static char TYPE_L_TEMPERATURE = 'T';
 	public final static char TYPE_L_HUMIDITE = 'H';
 	public final static char TYPE_L_PRESENCE = 'P';
-	public final static char TYPE_L_CONTACT = 'C'; // Contact fen�tre ou porte ferm�e
+	public final static char TYPE_L_CONTACT = 'C'; // Contact fenêtre ou porte fermée
 	public final static char TYPE_L_INTERRUPTEUR = 'I';
 	public final static char TYPE_L_ACTIONNEUR = 'E';
-	
+	public final static char TYPE_L_METEO_TEMP = 'U';
+	public final static char TYPE_L_METEO_HUM = 'V';
+
 	// Type physique des capteurs
 	public final static String TYPE_P_INTERRUPTEUR_4 = "05-02-01";
-	//public final static long ID_INTERRUPTEUR_4 = Long.parseLong("0021CC07", 16);
-	public final static String TYPE_P_PRISE = "prise";
-	//public final static long ID_PRISE = Long.parseLong("00FF9F1E05", 16);
-	public final static String TYPE_P_PRESENCE = "07-08-01"; //light, temp & occupancy
-	//public final static long ID_PRESENCE = Long.parseLong("000053E7B", 16);
+	public final static String TYPE_P_PRISE = "prise"; // actionneur
+	public final static String TYPE_P_PRESENCE = "07-08-01"; // light, temp & occupancy
 	public final static String TYPE_P_CONTACT = "06-00-01";
-	//public final static long ID_CONTACT = Long.parseLong("0001B292", 16);
 	public final static String TYPE_P_TEMPERATURE = "07-02-05";
-	
-	
-	// Correspondance Index dans le tableau de caract�res / byte EnOcean
+	public final static String TYPE_P_METEO = "meteo";
+
+	// Correspondance Index dans le tableau de caractères / byte EnOcean
 	public final static int INDEX_SYNC_BYTE_1_1 = 0;
 	public final static int INDEX_SYNC_BYTE_1_2 = 1;
 	public final static int INDEX_SYNC_BYTE_2_1 = 2;
@@ -75,7 +79,12 @@ public class Constantes {
 	public final static int CHECKSUM_1 = 26;
 	public final static int CHECKSUM_2 = 27;
 
-	// Temps au bout duquel l'alerte enl�vement est d�clench�e
-	public final static int DELAI_DECLENCHEMENT_TIMER = 900000;
-	//public final static int DELAI_DECLENCHEMENT_TIMER = 10000;
+	// Temps au bout duquel l'alerte enlèvement est déclenchée (ou la météo
+	// envoyée)
+	public final static int DELAI_DECLENCHEMENT_TIMER = 60000;
+	//public final static int DELAI_DECLENCHEMENT_TIMER = 9000000;
+
+	// Code postal de la ville dont on regarde la meteo (variable globale plutôt
+	// que constante)
+	public static int VILLE = 69008;
 }

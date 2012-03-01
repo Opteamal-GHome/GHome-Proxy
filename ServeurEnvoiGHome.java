@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -14,11 +13,8 @@ public class ServeurEnvoiGHome implements Runnable {
 	private ServerSocket serverSocket;
 	public boolean continuer = true;
 
-	public ServeurEnvoiGHome(int port) 
-	{
+	public ServeurEnvoiGHome(int port) {
 
-		System.out.println("ServeurEnvoiGHome : dans le constructeur");
-		
 		// Création du Thread
 		serveurEnvoiThread = new Thread(this);
 
@@ -50,31 +46,7 @@ public class ServeurEnvoiGHome implements Runnable {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			System.out.println("ServeurEnvoiGHome : Dans le while");
-			
-			try {
-				
-				ObjectInputStream input = new ObjectInputStream(s.getInputStream());
-				try {
-					ProxyTrame proxyTrame = (ProxyTrame) input.readObject();
-					System.out.println("ServeurEnvoiGHome : in = " + proxyTrame);
-					System.out.println("ServeurEnvoiGHome : in = " + proxyTrame.getType());
-				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				/*try {
-					String in = (String) input.readObject();
-					System.out.println("ServeurEnvoiGHome : in = " + in);
-				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}*/
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+
 		}
 
 	}
